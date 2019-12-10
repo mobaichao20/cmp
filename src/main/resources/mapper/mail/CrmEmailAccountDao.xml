@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.mail.dao.CrmEmailAccountDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.mail.entity.CrmEmailAccountEntity" id="crmEmailAccountMap">
+        <result property="configId" column="config_id"/>
+        <result property="mailAddress" column="mail_address"/>
+        <result property="password" column="password"/>
+        <result property="displayedName" column="displayed_name"/>
+        <result property="sendName" column="send_name"/>
+        <result property="mailSet" column="mail_set"/>
+        <result property="scheduleGet" column="schedule_get"/>
+        <result property="mailType" column="mail_type"/>
+        <result property="receiveMailServer" column="receive_mail_server"/>
+        <result property="receiveServerPort" column="receive_server_port"/>
+        <result property="sendMailServer" column="send_mail_server"/>
+        <result property="sendServerPort" column="send_server_port"/>
+        <result property="isSecretySend" column="is_secrety_send"/>
+        <result property="isPermanentSave" column="is_permanent_save"/>
+        <result property="isVertify" column="is_vertify"/>
+        <result property="signature" column="signature"/>
+        <result property="createCode" column="create_code"/>
+        <result property="createName" column="create_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateCode" column="update_code"/>
+        <result property="updateName" column="update_name"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+</mapper>

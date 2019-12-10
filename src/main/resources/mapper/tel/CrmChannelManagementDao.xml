@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.tel.dao.CrmChannelManagementDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.tel.entity.CrmChannelManagementEntity" id="crmChannelManagementMap">
+        <result property="id" column="id"/>
+        <result property="trafficBrand" column="traffic_brand"/>
+        <result property="ctiAddressMaster" column="cti_address_master"/>
+        <result property="ctiAddressSlave" column="cti_address_slave"/>
+        <result property="satisfactionNodeNumber" column="satisfaction_node_number"/>
+        <result property="broadcasterNode" column="broadcaster_node"/>
+        <result property="workingHoursBegin" column="working_hours_begin"/>
+        <result property="workingHoursEnd" column="working_hours_end"/>
+        <result property="isBlacklist" column="is_blacklist"/>
+        <result property="createCode" column="create_code"/>
+        <result property="createName" column="create_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateCode" column="update_code"/>
+        <result property="updateName" column="update_name"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.cus.dao.FilterDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.cus.entity.FilterEntity" id="filteMap">
+        <result property="id" column="id"/>
+        <result property="filterName" column="filter_name"/>
+        <result property="filterDescription" column="filter_description"/>
+        <result property="isPublic" column="is_public"/>
+        <result property="createCode" column="create_code"/>
+        <result property="createName" column="create_name"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+
+</mapper>

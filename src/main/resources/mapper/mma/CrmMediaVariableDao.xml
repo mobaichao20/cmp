@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.mma.dao.CrmMediaVariableDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.mma.entity.CrmMediaVariableEntity" id="crmMediaVariableMap">
+        <result property="id" column="id"/>
+        <result property="variableName" column="variable_name"/>
+        <result property="variableField" column="variable_field"/>
+        <result property="variableAttribute" column="variable_attribute"/>
+        <result property="variableType" column="variable_type"/>
+        <result property="variableClassificationId" column="variable_classification_id"/>
+        <result property="referencesCount" column="references_count"/>
+        <result property="createCode" column="create_code"/>
+        <result property="createName" column="create_name"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+
+</mapper>

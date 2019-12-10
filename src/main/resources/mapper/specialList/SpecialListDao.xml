@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="io.cmp.modules.specialList.dao.SpecialListDao">
+    <select id="getByPhone" resultType="io.cmp.modules.specialList.vo.VoEntity">
+        SELECT DISTINCT s.customer,s.creator,s.create_time,d.`value` as listType,s.verifier,s.verifier_time,s.list_status
+	        FROM crm_special_list AS s,sys_dict AS d,crm_customer_base AS b
+		        WHERE d.`code` = s.list_type AND d.type = 'list'
+		        <if test="params.customerStatus == 'true'">
+                    AND s.customer = b.customer_name
+                </if>
+		        <if test="params.phone != null and params.phone != ''">
+                    AND s.customer LIKE CONCAT('%',#{params.phone},'%')
+                </if>
+                <if test="params.creator != null and params.creator != ''">
+                    AND s.creator LIKE CONCAT('%',#{params.creator},'%')
+                </if>
+                <if test="params.status != null and params.status != ''">
+                    AND s.list_status = #{params.status}
+                </if>
+                <if test="params.listType != null and params.listType != ''">
+                    AND s.list_type = #{params.listType}
+                </if>
+                <if test="params.pickerStart != null and params.pickerStart != ''">
+                    AND s.create_time BETWEEN #{params.pickerStart} AND #{params.pickerEnd}
+                </if>
+                <if test="params.id != null and params.id != ''">
+                    AND b.id_number LIKE CONCAT('%',#{params.id},'%')
+                </if>
+                <if test="params.customerName != null and params.customerName != ''">
+                    AND b.customer_name LIKE CONCAT('%',#{params.customerName},'%')
+                </if>
+
+    </select>
+
+    <select id="queryBySel" resultType="io.cmp.modules.specialList.entity.SpecialListEntity">
+        SELECT DISTINCT customer,list_type,list_status,creator,create_time,verifier,verifier_time
+	        FROM crm_special_list
+                <trim prefix="WHERE (" suffix=")" prefixOverrides="AND |OR ">
+                    <if test="params.creator != null and params.creator != ''">
+                        creator LIKE CONCAT('%',#{params.creator},'%')
+                    </if>
+                    <if test="params.pickerStart != null and params.pickerStart != ''">
+                        AND create_time BETWEEN #{params.pickerStart} AND #{params.pickerEnd}
+                    </if>
+                    <if test="params.status != null and params.status != ''">
+                        AND list_status = #{params.status}
+                    </if>
+                    <if test="params.listType != null and params.listType != ''">
+                        AND list_type = #{params.listType}
+                    </if>
+                </trim>
+    </select>
+
+</mapper>

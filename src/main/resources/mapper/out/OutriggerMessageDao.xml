@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.out.dao.OutriggerMessageDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.out.entity.OutriggerMessageEntity" id="outriggerMessageMap">
+        <result property="outriggerId" column="outrigger_id"/>
+        <result property="campaignId" column="campaign_id"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="customerGender" column="customer_gender"/>
+        <result property="customerCredentialNo" column="customer_credential_no"/>
+        <result property="customerCredentialType" column="customer_credential_type"/>
+        <result property="customerTelephone" column="customer_telephone"/>
+        <result property="customerEmail" column="customer_email"/>
+        <result property="outriggerStatus" column="outrigger_status"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <!-- 查询所有需要录入系统的外部数据，1：未使用，2：已使用 -->
+    <select id="queryNotUsed" resultType="io.cmp.modules.out.entity.OutriggerMessageEntity">
+        select com.* from crm_outrigger_message com where com.outrigger_status=1
+    </select>
+
+</mapper>

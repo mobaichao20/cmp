@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.cam.dao.CampaignDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.cam.entity.CampaignEntity" id="campaignMap">
+        <result property="campaignId" column="campaign_id"/>
+        <result property="campaignCode" column="campaign_code"/>
+        <result property="campaignName" column="campaign_name"/>
+        <result property="businessType" column="business_type"/>
+        <result property="outgoingMode" column="outgoing_mode"/>
+        <result property="previewDuration" column="preview_duration"/>
+        <result property="maxDialNumber" column="max_dial_number"/>
+        <result property="maxRingingNumber" column="max_ringing_number"/>
+        <result property="dialMode" column="dial_mode"/>
+        <result property="overdueReminder" column="overdue_reminder"/>
+        <result property="dataSources" column="data_sources"/>
+        <result property="dialScheduleBegin" column="dial_schedule_begin"/>
+        <result property="dialScheduleEnd" column="dial_schedule_end"/>
+        <result property="termOfValidityBegin" column="term_of_validity_begin"/>
+        <result property="termOfValidityEnd" column="term_of_validity_end"/>
+        <result property="maxTaskNum" column="max_task_num"/>
+        <result property="excuteTaskNumber" column="excute_task_number"/>
+        <result property="finishTarget" column="finish_target"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createCode" column="create_code"/>
+        <result property="createName" column="create_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateCode" column="update_code"/>
+        <result property="updateName" column="update_name"/>
+        <result property="outriggerTableName" column="outrigger_table_name"/>
+        <result property="outriggerIdName" column="outrigger_id_name"/>
+        <result property="outriggerQuerySql" column="outrigger_query_sql"/>
+    </resultMap>
+
+
+</mapper>

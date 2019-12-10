@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.cus.dao.CustomerBaseDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <!--<resultMap type="io.cam.modules.cus.entity.CustomerBaseEntity" id="customerBaseMap">
+        <result property="id" column="id"/>
+        <result property="surname" column="surname"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="enName" column="en_name"/>
+        <result property="beforeName" column="before_name"/>
+        <result property="nickname" column="nickname"/>
+        <result property="idNumber" column="id_number"/>
+        <result property="driverNumber" column="driver_number"/>
+        <result property="nationality" column="nationality"/>
+        <result property="nation" column="nation"/>
+        <result property="nativePlace" column="native_place"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="birthday" column="birthday"/>
+        <result property="height" column="height"/>
+        <result property="weight" column="weight"/>
+        <result property="bloodType" column="blood_type"/>
+        <result property="politicalAppearance" column="political_appearance"/>
+        <result property="birth" column="birth"/>
+        <result property="workingYears" column="working_years"/>
+        <result property="maritalStatus" column="marital_status"/>
+        <result property="customerEducation" column="customer_education"/>
+        <result property="headUrl" column="head_url"/>
+        <result property="company" column="company"/>
+        <result property="department" column="department"/>
+        <result property="duty" column="duty"/>
+        <result property="belongCode" column="belong_code"/>
+        <result property="belongInstitutions" column="belong_institutions"/>
+        <result property="customerNotes" column="customer_notes"/>
+        <result property="isEffective" column="is_effective"/>
+        <result property="createCode" column="create_code"/>
+        <result property="createName" column="create_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateCode" column="update_code"/>
+        <result property="updateName" column="update_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDelete" column="is_delete"/>
+    </resultMap>-->
+
+    <update id="updateByIds">
+        update crm_customer_base set is_delete='1' where id in
+        <foreach item="ids" collection="array" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </update>
+
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.mail.dao.CrmEmailReceiverDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.mail.entity.CrmEmailReceiverEntity" id="crmEmailReceiverMap">
+        <result property="id" column="id"/>
+        <result property="sender" column="sender"/>
+        <result property="receiver" column="receiver"/>
+        <result property="mailSubject" column="mail_subject"/>
+        <result property="fullText" column="full_text"/>
+        <result property="mediumType" column="medium_type"/>
+        <result property="mailCopy" column="mail_copy"/>
+        <result property="securitySend" column="security_send"/>
+        <result property="mailContent" column="mail_content"/>
+        <result property="isReplay" column="is_replay"/>
+        <result property="customId" column="custom_id"/>
+        <result property="customName" column="custom_name"/>
+        <result property="mailType" column="mail_type"/>
+        <result property="moduleId" column="module_id"/>
+        <result property="isMailAttachment" column="is_mail_attachment"/>
+        <result property="receiceTime" column="receice_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="mailOwner" column="mail_owner"/>
+
+    </resultMap>
+    <select id="emailReceiverList" resultType="io.cmp.modules.mail.entity.CrmEmailReceiverEntity">
+        select * from crm_email_receiver
+    </select>
+
+</mapper>

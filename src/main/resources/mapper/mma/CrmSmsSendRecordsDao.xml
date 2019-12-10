@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.mma.dao.CrmSmsSendRecordsDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.mma.entity.CrmSmsSendRecordsEntity" id="crmSmsSendRecordsMap">
+        <result property="id" column="id"/>
+        <result property="templateId" column="template_id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="sendNumber" column="send_number"/>
+        <result property="content" column="content"/>
+        <result property="status" column="status"/>
+        <result property="isDelivery" column="is_delivery"/>
+        <result property="deliveryTime" column="delivery_time"/>
+        <result property="createCode" column="create_code"/>
+        <result property="createName" column="create_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="templateType" column="template_type"/>
+        <result property="realSendTime" column="real_send_time"/>
+        <result property="batchFlag" column="batch_flag"/>
+        <result property="returnMsg" column="return_msg"/>
+
+    </resultMap>
+
+    <update id="updateByIds">
+        update crm_sms_send_records set is_delete='1' where id in
+        <foreach item="ids" collection="array" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </update>
+    <update id="findMailBySms">
+        update crm_sms_send_records set is_delete='1' where id in
+        <foreach item="ids" collection="array" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </update>
+</mapper>

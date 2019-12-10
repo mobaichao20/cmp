@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.mar.dao.MarketingTaskDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.mar.entity.MarketingTaskEntity" id="marketingTaskMap">
+        <result property="marketingId" column="marketing_id"/>
+        <result property="campaignId" column="campaign_id"/>
+        <result property="outriggerId" column="outrigger_id"/>
+        <result property="bookingId" column="booking_id"/>
+        <result property="taskName" column="task_name"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="customerTelephone" column="customer_telephone"/>
+        <result property="customerCredentialNo" column="customer_credential_no"/>
+        <result property="customerCredentialType" column="customer_credential_type"/>
+        <result property="customerEmail" column="customer_email"/>
+        <result property="beginTime" column="begin_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="endCode" column="end_code"/>
+        <result property="taskStatus" column="task_status"/>
+        <result property="userCode" column="user_code"/>
+        <result property="organCode" column="organ_code"/>
+        <result property="source" column="source"/>
+        <result property="firstStatus" column="first_status"/>
+        <result property="secondStatus" column="second_status"/>
+        <result property="thirdStatus" column="third_status"/>
+        <result property="isBooking" column="is_booking"/>
+        <result property="bookingType" column="booking_type"/>
+        <result property="bookingTime" column="booking_time"/>
+        <result property="overdueTime" column="overdue_time"/>
+        <result property="batch" column="batch"/>
+        <result property="description" column="description"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createCode" column="create_code"/>
+        <result property="createName" column="create_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateCode" column="update_code"/>
+        <result property="updateName" column="update_name"/>
+    </resultMap>
+
+    <!-- 根据ID查询数据 -->
+    <select id="queryById" resultType="io.cmp.modules.mar.vo.MarketingTaskQueryVo">
+        select t.* from crm_marketing_task t where t.marketing_id = #{marketingId}
+    </select>
+
+</mapper>

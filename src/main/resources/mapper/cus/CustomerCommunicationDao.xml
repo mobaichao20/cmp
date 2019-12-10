@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.cus.dao.CustomerCommunicationDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.cus.entity.CustomerCommunicationEntity" id="customerCommunicationMap">
+        <result property="id" column="id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="communicationType" column="communication_type"/>
+        <result property="mobile" column="mobile"/>
+        <result property="areaCode" column="area_code"/>
+        <result property="phone" column="phone"/>
+        <result property="extensionNum" column="extension_num"/>
+        <result property="qq" column="qq"/>
+        <result property="weixin" column="weixin"/>
+        <result property="email" column="email"/>
+        <result property="fax" column="fax"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="area" column="area"/>
+        <result property="address" column="address"/>
+        <result property="postCode" column="post_code"/>
+        <result property="isContact" column="is_contact"/>
+        <result property="createCode" column="create_code"/>
+        <result property="createName" column="create_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateCode" column="update_code"/>
+        <result property="updateName" column="update_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDelete" column="is_delete"/>
+    </resultMap>
+
+    <update id="updateByIds">
+        update crm_customer_communication set is_delete='1' where id in
+        <foreach item="ids" collection="array" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </update>
+
+
+    <select id="queryCustomerCommunicationCustomerBaselist" resultType="io.cmp.modules.cus.vo.CustomerCommunicationCustomerBaseVo">
+        SELECT
+            c.id as id,
+            c.customer_id as customerId,
+            c.communication_type as communicationType,
+            c.mobile as mobile,
+            c.area_code as areaCode,
+            c.phone as phone,
+            c.extension_num as extensionNum,
+            c.qq,
+            c.weixin,
+            c.email,
+            c.fax,
+            c.province,
+            c.city,
+            c.area,
+            c.address,
+            c.post_code,
+            c.is_contact,
+            c.create_code,
+            c.create_name,
+            c.create_time,
+            c.update_code,
+            c.update_name,
+            c.update_time,
+            c.is_delete,
+            b.surname,
+            b.customer_name,
+            b.en_name,
+            b.before_name,
+            b.nickname,
+            b.id_number,
+            b.driver_number,
+            b.nationality,
+            b.nation,
+            b.native_place,
+            b.sex,
+            b.age,
+            b.birthday,
+            b.height,
+            b.weight,
+            b.blood_type,
+            b.political_appearance,
+            b.birth,
+            b.working_years,
+            b.marital_status,
+            b.customer_education,
+            b.head_url,
+            b.company,
+            b.department,
+            b.duty,
+            b.belong_code,
+            b.belong_institutions,
+            b.customer_notes,
+            b.is_effective
+        FROM
+            crm_customer_communication c,crm_customer_base b where c.customer_id=b.id  and c.is_delete='0' and b.is_effective='1' and b.is_delete='0'
+        <if test="communicationType != null and communicationType != ''">
+            AND c.communication_type = '${communicationType}'
+        </if>
+        <if test="mobile != null and mobile != ''">
+            AND c.mobile like '%${mobile}%'
+        </if>
+        <if test="areaCode != null and areaCode != ''">
+            AND c.area_code like '%${areaCode}%'
+        </if>
+        <if test="phone != null and phone != ''">
+            AND c.phone like '%${phone}%'
+        </if>
+        <if test="email != null and email != ''">
+            AND c.email like '%${email}%'
+        </if>
+        <if test="customerName != null and customerName != ''">
+            AND  b.customer_name like '%${customerName}%'
+        </if>
+        <if test="enName != null and enName != ''">
+            AND  b.en_name like '%${enName}%'
+        </if>
+    </select>
+
+</mapper>

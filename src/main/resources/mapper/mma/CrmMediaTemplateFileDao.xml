@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.mma.dao.CrmMediaTemplateFileDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.mma.entity.CrmMediaTemplateFileEntity" id="crmMediaTemplateFileMap">
+        <result property="id" column="id"/>
+        <result property="templateId" column="template_id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="fileUrl" column="file_url"/>
+    </resultMap>
+
+
+</mapper>

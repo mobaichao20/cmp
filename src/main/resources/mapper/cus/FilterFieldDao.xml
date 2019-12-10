@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.cus.dao.FilterFieldDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.cus.entity.FilterFieldEntity" id="filterFieldMap">
+        <result property="id" column="id"/>
+        <result property="filterId" column="filter_id"/>
+        <result property="dataName" column="data_name"/>
+        <result property="dataAttribute" column="data_attribute"/>
+        <result property="displayName" column="display_name"/>
+        <result property="type" column="type"/>
+        <result property="dataValue" column="data_value"/>
+    </resultMap>
+
+    <select id="queryFilterFieldList" resultType="io.cmp.modules.cus.entity.FilterFieldEntity">
+        select * from crm_filter_field where filter_id = #{filterId}
+    </select>
+
+    <delete id="deleteBatch">
+        delete from crm_filter_field where filter_id in
+        <foreach item="filterId" collection="array" open="(" separator="," close=")">
+            #{filterId}
+        </foreach>
+    </delete>
+
+
+</mapper>

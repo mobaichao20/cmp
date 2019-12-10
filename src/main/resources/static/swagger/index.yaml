@@ -1,0 +1,6507 @@
+swagger: '2.0'
+info:
+  description: cmp是一个客户关系管理平台
+  version: 1.0.0
+  title: 客户关系管理平台
+
+basePath: /cam
+
+schemes:
+  - http
+
+#认证
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "token"
+    in: "header"
+
+#定义接口数据
+paths:
+  /captcha.jpg:
+    get:
+      tags:
+        - 用户登录
+      summary: 获取验证码
+      produces:
+        - application/octet-stream
+      parameters:
+        - name: uuid
+          description: UUID
+          in: query
+          type: string
+          required: true
+  /sys/login:
+    post:
+      tags:
+        - 用户登录
+      summary: 用户登录
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 管理员对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/LoginForm'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/Login'
+
+  /sys/user/list:
+    get:
+      tags:
+        - 管理员管理
+      summary: 管理员列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: username
+          description: 用户名
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回管理员列表
+          schema:
+            $ref: '#/definitions/SysUserEntityList'
+  /sys/user/info:
+    get:
+      tags:
+        - 管理员管理
+      summary: 当前管理员信息
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 返回当前管理员信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/SysUserEntity'
+  /sys/user/info/{userId}:
+    get:
+      tags:
+        - 管理员管理
+      summary: 获取管理员信息
+      produces:
+        - application/json
+      parameters:
+        - name: userId
+          description: 用户ID
+          in: path
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: 返回管理员信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/SysUserEntity'
+  /sys/user/password:
+    post:
+      tags:
+        - 管理员管理
+      summary: 修改密码
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 管理员对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/PasswordForm'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /sys/user/save:
+    post:
+      tags:
+        - 管理员管理
+      summary: 添加管理员
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 管理员对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/SysUserEntityEdit'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /sys/user/update:
+    post:
+      tags:
+        - 管理员管理
+      summary: 修改管理员
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 管理员对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/SysUserEntityEdit'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /sys/user/delete:
+    post:
+      tags:
+        - 管理员管理
+      summary: 删除管理员
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 用户ID列表
+          in: body
+          type: array
+          items:
+            type: integer
+            format: int64
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /sys/user/bindingExtension:
+    post:
+      tags:
+        - 管理员管理
+      summary: 绑定分机号
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 管理员对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/SysUserEntityEdit'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+
+  /sys/dict/list:
+    get:
+      tags:
+        - 字典管理
+      summary: 字典列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: name
+          description: 字典名称
+          in: query
+          type: string
+        - name: type
+          description: 字典类型
+          in: query
+          type: string
+        - name: code
+          description: 字典码
+          in: query
+          type: string
+        - name: value
+          description: 字典值
+          in: query
+          type: string
+        - name: orderNum
+          description: 排序
+          in: query
+          type: integer
+        - name: delFlag
+          description: 删除标记  -1：已删除  0：正常
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回字典列表
+          schema:
+            $ref: '#/definitions/SysDictEntityList'
+  /sys/dict/info/{id}:
+    get:
+      tags:
+        - 字典管理
+      summary: 获取字典信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: 字典ID
+          in: path
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: 返回字典信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/SysDictEntity'
+  /sys/dict/save:
+    post:
+      tags:
+        - 字典管理
+      summary: 添加字典
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 字典对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/SysDictEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /sys/dict/update:
+    post:
+      tags:
+        - 字典管理
+      summary: 修改字典
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 字典对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/SysDictEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /sys/dict/delete:
+    post:
+      tags:
+        - 字典管理
+      summary: 删除字典
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 字典ID列表
+          in: body
+          type: array
+          items:
+            type: integer
+            format: int64
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+
+
+  /sys/oss/list:
+    get:
+      tags:
+        - 文件服务
+      summary: 文件列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回文件列表
+          schema:
+            $ref: '#/definitions/SysOssEntityList'
+  /sys/oss/config:
+    get:
+      tags:
+        - 文件服务
+      summary: 云存储配置信息
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 返回云存储配置信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              config:
+                description: 云存储配置信息
+                $ref: '#/definitions/SysCloudStorageEntity'
+  /sys/oss/saveConfig:
+    post:
+      tags:
+        - 文件服务
+      summary: 保存云存储配置信息
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 参数对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/SysCloudStorageEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /sys/oss/upload:
+    post:
+      tags:
+        - 文件服务
+      summary: 上传文件
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - name: file
+          description: 文件
+          in: formData
+          type: file
+          required: true
+      responses:
+        '200':
+          description: 返回文件列表
+          schema:
+            $ref: '#/definitions/FileUpload'
+  /sys/oss/delete:
+    post:
+      tags:
+        - 文件服务
+      summary: 删除文件
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 文件ID列表
+          in: body
+          type: array
+          items:
+            type: integer
+            format: int64
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /sys/schedule/list:
+    get:
+      tags:
+        - 定时任务
+      summary: 定时任务列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: beanName
+          description: spring bean名称
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回定时任务列表
+          schema:
+            $ref: '#/definitions/ScheduleJobEntityList'
+  /sys/schedule/info/{jobId}:
+    get:
+      tags:
+        - 定时任务
+      summary: 获取定时任务信息
+      produces:
+        - application/json
+      parameters:
+        - name: jobId
+          description: 定时任务ID
+          in: path
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: 返回定时任务信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              schedule:
+                description: 定时任务信息
+                $ref: '#/definitions/ScheduleJobEntity'
+  /sys/schedule/save:
+    post:
+      tags:
+        - 定时任务
+      summary: 添加定时任务
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 定时任务对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/ScheduleJobEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /sys/schedule/update:
+    post:
+      tags:
+        - 定时任务
+      summary: 修改定时任务
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 定时任务对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/ScheduleJobEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /sys/schedule/delete:
+    post:
+      tags:
+        - 定时任务
+      summary: 删除定时任务
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 定时任务ID列表
+          in: body
+          type: array
+          items:
+            type: integer
+            format: int64
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /sys/schedule/run:
+    post:
+      tags:
+        - 定时任务
+      summary: 立即执行任务
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 定时任务ID列表
+          in: body
+          type: array
+          items:
+            type: integer
+            format: int64
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /sys/schedule/pause:
+    post:
+      tags:
+        - 定时任务
+      summary: 暂停定时任务
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 定时任务ID列表
+          in: body
+          type: array
+          items:
+            type: integer
+            format: int64
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /sys/schedule/resume:
+    post:
+      tags:
+        - 定时任务
+      summary: 恢复定时任务
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 定时任务ID列表
+          in: body
+          type: array
+          items:
+            type: integer
+            format: int64
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /sys/scheduleLog/list:
+    get:
+      tags:
+        - 定时任务
+      summary: 定时任务日志列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: beanName
+          description: spring bean名称
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回定时任务日志列表
+          schema:
+            $ref: '#/definitions/ScheduleJobLogEntityList'
+  /sys/scheduleLog/info/{logId}:
+    get:
+      tags:
+        - 定时任务
+      summary: 获取定时任务日志信息
+      produces:
+        - application/json
+      parameters:
+        - name: logId
+          description: 日志ID
+          in: path
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: 返回定时任务日志信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              schedule:
+                description: 定时任务日志信息
+                $ref: '#/definitions/ScheduleJobLogEntity'
+
+  /cus/fieldconfiguration/list:
+    get:
+      tags:
+        - 字段配置管理
+      summary: 字段配置列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: dataName
+          description: 数据名称
+          in: query
+          type: string
+        - name: dataAttribute
+          description: 数据字段属性
+          in: query
+          type: string
+        - name: displayName
+          description: 显示名称
+          in: query
+          type: string
+        - name: fieldType
+          description: 字段类型 1字符 2-数值 3-日期
+          in: query
+          type: string
+        - name: type
+          description: 表类型
+          in: query
+          type: string
+        - name: isEnable
+          description: 是否启用 0-否 1-是
+          in: query
+          type: string
+        - name: isKeyword
+          description: 是否关键字 0-否1-是
+          in: query
+          type: string
+        - name: isQuery
+          description: 是否查询条件 0-否 1-是
+          in: query
+          type: string
+        - name: formType
+          description: 表单类型 1-精确查询(文本) 2-模糊查询(文本)  3-下拉 4-单选 5-复选 6-区间查询左(文本)  7-区间查询右(文本)
+          in: query
+          type: string
+        - name: baseDatatype
+          description: 基础数据类型
+          in: query
+          type: string
+        - name: isListfield
+          description: 是否列表字段 0-否 1-是
+          in: query
+          type: string
+        - name: queryNum
+          description: 查询序号
+          in: query
+          type: string
+        - name: listNum
+          description: 列表序号
+          in: query
+          type: string
+        - name: detailsNum
+          description: 详情序号
+          in: query
+          type: string
+        - name: updateCode
+          description: 修改人代码
+          in: query
+          type: string
+        - name: updateName
+          description: 修改人
+          in: query
+          type: string
+        - name: startUpdateTime
+          description: 开始修改时间
+          in: query
+          type: string
+          format: date
+        - name: endUpdateTime
+          description: 结束修改时间
+          in: query
+          type: string
+          format: date
+      responses:
+        '200':
+          description: 返回字段配置列表
+          schema:
+            $ref: '#/definitions/FieldConfigurationEntityList'
+  /cus/fieldconfiguration/info/{id}:
+    get:
+      tags:
+        - 字段配置管理
+      summary: 获取字段配置信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回字段配置信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/FieldConfigurationEntity'
+  /cus/fieldconfiguration/save:
+    post:
+      tags:
+        - 字段配置管理
+      summary: 添加字段配置
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 字段配置对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/FieldConfigurationEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/fieldconfiguration/update:
+    post:
+      tags:
+        - 字段配置管理
+      summary: 修改字段配置
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 字段配置对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/FieldConfigurationEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/fieldconfiguration/delete:
+    post:
+      tags:
+        - 字段配置管理
+      summary: 删除字段配置
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 字段配置ID列表
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /cus/datatraceability/list:
+    get:
+      tags:
+        - 数据追溯管理
+      summary: 数据追溯列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: dataName
+          description: 数据名称
+          in: query
+          type: string
+        - name: dataAttribute
+          description: 数据字段属性
+          in: query
+          type: string
+        - name: displayName
+          description: 显示名称
+          in: query
+          type: string
+        - name: type
+          description: 表类型
+          in: query
+          type: string
+        - name: dataValue
+          description: 数据值
+          in: query
+          type: string
+        - name: updateCode
+          description: 修改人代码
+          in: query
+          type: string
+        - name: updateName
+          description: 修改人
+          in: query
+          type: string
+        - name: startUpdateTime
+          description: 开始修改时间
+          in: query
+          type: string
+          format: date
+        - name: endUpdateTime
+          description: 结束修改时间
+          in: query
+          type: string
+          format: date
+      responses:
+        '200':
+          description: 返回数据追溯列表
+          schema:
+            $ref: '#/definitions/DataTraceabilityEntityList'
+  /cus/datatraceability/info/{id}:
+    get:
+      tags:
+        - 数据追溯管理
+      summary: 获取数据追溯信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回数据追溯信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/DataTraceabilityEntity'
+  /cus/datatraceability/save:
+    post:
+      tags:
+        - 数据追溯管理
+      summary: 添加数据追溯
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 数据追溯对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/DataTraceabilityEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/datatraceability/update:
+    post:
+      tags:
+        - 数据追溯管理
+      summary: 修改数据追溯
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 数据追溯对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/DataTraceabilityEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/datatraceability/delete:
+    post:
+      tags:
+        - 数据追溯管理
+      summary: 删除数据追溯
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 数据追溯ID列表
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /cus/customertrajectory/list:
+    get:
+      tags:
+        - 客户轨迹管理
+      summary: 客户轨迹列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: customerId
+          description: 客户id
+          in: query
+          type: string
+        - name: trajectoryName
+          description: 轨迹名称
+          in: query
+          type: string
+        - name: trajectoryType
+          description: 轨迹类型
+          in: query
+          type: string
+        - name: createCode
+          description: 创建人代码
+          in: query
+          type: string
+        - name: createName
+          description: 创建人
+          in: query
+          type: string
+        - name: startCreateTime
+          description: 开始创建时间
+          in: query
+          type: string
+          format: date
+        - name: endCreateTime
+          description: 结束创建时间
+          in: query
+          type: string
+          format: date
+        - name: startCreateTime
+          description: 开始创建时间
+          in: query
+          type: string
+          format: date
+        - name: endCreateTime
+          description: 结束创建时间
+          in: query
+          type: string
+          format: date
+      responses:
+        '200':
+          description: 返回客户轨迹列表
+          schema:
+            $ref: '#/definitions/CustomerTrajectoryEntityList'
+
+  /cus/customertrajectory/info/{id}:
+    get:
+      tags:
+        - 客户轨迹管理
+      summary: 获取客户轨迹信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回客户轨迹信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CustomerTrajectoryEntity'
+  /cus/customertrajectory/save:
+    post:
+      tags:
+        - 客户轨迹管理
+      summary: 添加客户轨迹
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 客户轨迹对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CustomerTrajectoryEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/customertrajectory/update:
+    post:
+      tags:
+        - 客户轨迹管理
+      summary: 修改客户轨迹
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 客户轨迹对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CustomerTrajectoryEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/customertrajectory/delete:
+    post:
+      tags:
+        - 客户轨迹管理
+      summary: 删除客户轨迹
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 客户轨迹ID列表
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /cus/customertrajectoryson/list:
+    get:
+      tags:
+        - 客户轨迹子表管理
+      summary: 客户轨迹子表列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: trajectoryId
+          description: 轨迹id
+          in: query
+          type: string
+        - name: businessId
+          description: 业务id
+          in: query
+          type: string
+        - name: businessName
+          description: 业务名称
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回客户轨迹子表列表
+          schema:
+            $ref: '#/definitions/CustomerTrajectorySonEntityList'
+  /cus/customertrajectoryson/info/{id}:
+    get:
+      tags:
+        - 客户轨迹子表管理
+      summary: 获取客户轨迹子表信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回客户轨迹子表信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CustomerTrajectorySonEntity'
+  /cus/customertrajectoryson/save:
+    post:
+      tags:
+        - 客户轨迹子表管理
+      summary: 添加客户轨迹子表
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 客户轨迹子表对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CustomerTrajectorySonEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/customertrajectoryson/update:
+    post:
+      tags:
+        - 客户轨迹子表管理
+      summary: 修改客户轨迹子表
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 客户轨迹子表对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CustomerTrajectorySonEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/customertrajectoryson/delete:
+    post:
+      tags:
+        - 客户轨迹子表管理
+      summary: 删除客户轨迹子表
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 客户轨迹子表ID列表
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /cus/filter/list:
+    get:
+      tags:
+        - 过滤器管理
+      summary: 过滤器列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: filterName
+          description: 过滤器名称
+          in: query
+          type: string
+        - name: isPublic
+          description: 是否公有 0-否 1-是
+          in: query
+          type: string
+        - name: createCode
+          description: 创建人代码
+          in: query
+          type: string
+        - name: createName
+          description: 创建人
+          in: query
+          type: string
+        - name: startCreateTime
+          description: 开始创建时间
+          in: query
+          type: string
+          format: date
+        - name: endCreateTime
+          description: 结束创建时间
+          in: query
+          type: string
+          format: date
+      responses:
+        '200':
+          description: 返回过滤器列表
+          schema:
+            $ref: '#/definitions/FilterEntityList'
+  /cus/filter/info/{id}:
+    get:
+      tags:
+        - 过滤器管理
+      summary: 获取过滤器信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回过滤器信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/FilterEntity'
+  /cus/filter/save:
+    post:
+      tags:
+        - 过滤器管理
+      summary: 添加过滤器
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 过滤器对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/FilterEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/filter/update:
+    post:
+      tags:
+        - 过滤器管理
+      summary: 修改过滤器
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 过滤器对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/FilterEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/filter/delete:
+    post:
+      tags:
+        - 过滤器管理
+      summary: 删除过滤器
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 过滤器ID列表
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+
+  /cus/filterfield/list:
+    get:
+      tags:
+        - 过滤器字段管理
+      summary: 过滤器字段列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: filterId
+          description: 过滤器id
+          in: query
+          type: string
+        - name: dataName
+          description: 数据名称
+          in: query
+          type: string
+        - name: dataAttribute
+          description: 数据字段属性
+          in: query
+          type: string
+        - name: displayName
+          description: 显示名称
+          in: query
+          type: string
+        - name: type
+          description: 表类型
+          in: query
+          type: string
+        - name: dataValue
+          description: 数据值
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回过滤器字段列表
+          schema:
+            $ref: '#/definitions/FilterFieldEntityList'
+  /cus/filterfield/info/{id}:
+    get:
+      tags:
+        - 过滤器字段管理
+      summary: 获取过滤器字段信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回过滤器字段信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/FilterFieldEntity'
+  /cus/filterfield/save:
+    post:
+      tags:
+        - 过滤器字段管理
+      summary: 添加过滤器字段
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 过滤器字段对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/FilterFieldEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/filterfield/update:
+    post:
+      tags:
+        - 过滤器字段管理
+      summary: 修改过滤器字段
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 过滤器字段对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/FilterFieldEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/filterfield/delete:
+    post:
+      tags:
+        - 过滤器字段管理
+      summary: 删除过滤器字段
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 过滤器字段ID列表
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /cus/customerbase/list:
+    get:
+      tags:
+        - 客户信息管理
+      summary: 客户信息列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: surname
+          description: 姓
+          in: query
+          type: string
+        - name: customerName
+          description: 姓名
+          in: query
+          type: string
+        - name: enName
+          description: 英文名
+          in: query
+          type: string
+        - name: beforeName
+          description: 曾用名
+          in: query
+          type: string
+        - name: nickname
+          description: 昵称
+          in: query
+          type: string
+        - name: idNumber
+          description: 身份证号码
+          in: query
+          type: string
+        - name: driverNumber
+          description: 驾照号码
+          in: query
+          type: string
+        - name: nationality
+          description: 国籍
+          in: query
+          type: string
+        - name: nation
+          description: 民族
+          in: query
+          type: string
+        - name: nativePlace
+          description: 籍贯
+          in: query
+          type: string
+        - name: sex
+          description: 性别
+          in: query
+          type: string
+        - name: age
+          description: 年龄
+          in: query
+          type: integer
+        - name: birthday
+          description: 生日
+          in: query
+          type: string
+        - name: height
+          description: 身高
+          in: query
+          type: integer
+        - name: weight
+          description: 体重
+          in: query
+          type: integer
+        - name: bloodType
+          description: 血型
+          in: query
+          type: string
+        - name: politicalAppearance
+          description: 政治面貌
+          in: query
+          type: string
+        - name: birth
+          description: 生育
+          in: query
+          type: string
+        - name: workingYears
+          description: 工龄
+          in: query
+          type: integer
+        - name: maritalStatus
+          description: 婚姻状况
+          in: query
+          type: string
+        - name: customerEducation
+          description: 客户学历
+          in: query
+          type: string
+        - name: headUrl
+          description: 头像地址
+          in: query
+          type: string
+        - name: company
+          description: 公司
+          in: query
+          type: string
+        - name: department
+          description: 部门
+          in: query
+          type: string
+        - name: duty
+          description: 职务
+          in: query
+          type: string
+        - name: belongCode
+          description: 所属坐席
+          in: query
+          type: string
+        - name: belongInstitutions
+          description: 坐席所属机构
+          in: query
+          type: string
+        - name: customerNotes
+          description: 客户备注
+          in: query
+          type: string
+        - name: isEffective
+          description: 是否有效 0-否 1-是
+          in: query
+          type: string
+        - name: createCode
+          description: 创建人代码
+          in: query
+          type: string
+        - name: createName
+          description: 创建人
+          in: query
+          type: string
+        - name: startCreateTime
+          description: 开始创建时间
+          in: query
+          type: string
+          format: date
+        - name: endCreateTime
+          description: 结束创建时间
+          in: query
+          type: string
+          format: date
+        - name: updateCode
+          description: 修改人代码
+          in: query
+          type: string
+        - name: updateName
+          description: 修改人
+          in: query
+          type: string
+        - name: startUpdateTime
+          description: 开始修改时间
+          in: query
+          type: string
+          format: date
+        - name: endUpdateTime
+          description: 结束修改时间
+          in: query
+          type: string
+          format: date
+        - name: isDelete
+          description: 是否删除 0：否 1：是
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回客户信息列表
+          schema:
+            $ref: '#/definitions/CustomerBaseEntityList'
+  /cus/customerbase/info/{id}:
+    get:
+      tags:
+        - 客户信息管理
+      summary: 获取客户信息信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回客户信息信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CustomerBaseEntity'
+  /cus/customerbase/save:
+    post:
+      tags:
+        - 客户信息管理
+      summary: 添加客户信息
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 客户信息对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CustomerBaseEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/customerbase/update:
+    post:
+      tags:
+        - 客户信息管理
+      summary: 修改客户信息
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 客户信息对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CustomerBaseEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/customerbase/delete:
+    post:
+      tags:
+        - 客户信息管理
+      summary: 删除客户信息
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 客户信息ID列表
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /cus/customerbaseexcle/exportSelectList:
+    post:
+      tags:
+        - 客户信息管理
+      summary: 导出选中客户信息列表
+      produces:
+        - application/octet-stream
+      parameters:
+        - name: body
+          description: 客户信息ID列表
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            type: file
+
+  /cus/customerbaseexcle/exportQueryList:
+    get:
+      tags:
+        - 客户信息管理
+      summary: 按条件导出客户信息列表
+      produces:
+        - application/octet-stream
+      parameters:
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: surname
+          description: 姓
+          in: query
+          type: string
+        - name: customerName
+          description: 姓名
+          in: query
+          type: string
+        - name: enName
+          description: 英文名
+          in: query
+          type: string
+        - name: beforeName
+          description: 曾用名
+          in: query
+          type: string
+        - name: nickname
+          description: 昵称
+          in: query
+          type: string
+        - name: idNumber
+          description: 身份证号码
+          in: query
+          type: string
+        - name: driverNumber
+          description: 驾照号码
+          in: query
+          type: string
+        - name: nationality
+          description: 国籍
+          in: query
+          type: string
+        - name: nation
+          description: 民族
+          in: query
+          type: string
+        - name: nativePlace
+          description: 籍贯
+          in: query
+          type: string
+        - name: sex
+          description: 性别
+          in: query
+          type: string
+        - name: age
+          description: 年龄
+          in: query
+          type: integer
+        - name: birthday
+          description: 生日
+          in: query
+          type: string
+        - name: height
+          description: 身高
+          in: query
+          type: integer
+        - name: weight
+          description: 体重
+          in: query
+          type: integer
+        - name: bloodType
+          description: 血型
+          in: query
+          type: string
+        - name: politicalAppearance
+          description: 政治面貌
+          in: query
+          type: string
+        - name: birth
+          description: 生育
+          in: query
+          type: string
+        - name: workingYears
+          description: 工龄
+          in: query
+          type: integer
+        - name: maritalStatus
+          description: 婚姻状况
+          in: query
+          type: string
+        - name: customerEducation
+          description: 客户学历
+          in: query
+          type: string
+        - name: headUrl
+          description: 头像地址
+          in: query
+          type: string
+        - name: company
+          description: 公司
+          in: query
+          type: string
+        - name: department
+          description: 部门
+          in: query
+          type: string
+        - name: duty
+          description: 职务
+          in: query
+          type: string
+        - name: belongCode
+          description: 所属坐席
+          in: query
+          type: string
+        - name: belongInstitutions
+          description: 坐席所属机构
+          in: query
+          type: string
+        - name: customerNotes
+          description: 客户备注
+          in: query
+          type: string
+        - name: isEffective
+          description: 是否有效 0-否 1-是
+          in: query
+          type: string
+        - name: createCode
+          description: 创建人代码
+          in: query
+          type: string
+        - name: createName
+          description: 创建人
+          in: query
+          type: string
+        - name: startCreateTime
+          description: 开始创建时间
+          in: query
+          type: string
+          format: date
+        - name: endCreateTime
+          description: 结束创建时间
+          in: query
+          type: string
+          format: date
+        - name: updateCode
+          description: 修改人代码
+          in: query
+          type: string
+        - name: updateName
+          description: 修改人
+          in: query
+          type: string
+        - name: startUpdateTime
+          description: 开始修改时间
+          in: query
+          type: string
+          format: date
+        - name: endUpdateTime
+          description: 结束修改时间
+          in: query
+          type: string
+          format: date
+        - name: isDelete
+          description: 是否删除 0：否 1：是
+          in: query
+          type: string
+      responses:
+        '200':
+          schema:
+            type: file
+
+  /cus/customerbaseexcle/exportAllList:
+    get:
+      tags:
+        - 客户信息管理
+      summary: 导出全部客户信息列表
+      produces:
+        - application/octet-stream
+      responses:
+        '200':
+          schema:
+            type: file
+
+  /cus/customercommunication/list:
+    get:
+      tags:
+        - 客户信息通讯管理
+      summary: 客户信息通讯列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: customerId
+          description: 客户id
+          in: query
+          type: string
+        - name: communicationType
+          description: 通讯类型 1-移动电话 2-固定电话 3-qq 4-微信 5-邮件 6-传真 7-通讯地址
+          in: query
+          type: string
+        - name: mobile
+          description: 手机
+          in: query
+          type: string
+        - name: areaCode
+          description: 区号
+          in: query
+          type: string
+        - name: phone
+          description: 座机
+          in: query
+          type: string
+        - name: extensionNum
+          description: 分机号
+          in: query
+          type: string
+        - name: qq
+          description: qq
+          in: query
+          type: string
+        - name: weixin
+          description: 微信
+          in: query
+          type: string
+        - name: email
+          description: 电子邮件
+          in: query
+          type: string
+        - name: fax
+          description: 传真
+          in: query
+          type: string
+        - name: province
+          description: 省
+          in: query
+          type: string
+        - name: city
+          description: 市
+          in: query
+          type: string
+        - name: area
+          description: 区
+          in: query
+          type: string
+        - name: address
+          description: 地址
+          in: query
+          type: string
+        - name: postCode
+          description: 邮政编码
+          in: query
+          type: string
+        - name: isContact
+          description: 是否常用联系方式 0-否 1-是
+          in: query
+          type: string
+        - name: createCode
+          description: 创建人代码
+          in: query
+          type: string
+        - name: createName
+          description: 创建人
+          in: query
+          type: string
+        - name: startCreateTime
+          description: 开始创建时间
+          in: query
+          type: string
+          format: date
+        - name: endCreateTime
+          description: 结束创建时间
+          in: query
+          type: string
+          format: date
+        - name: updateCode
+          description: 修改人代码
+          in: query
+          type: string
+        - name: updateName
+          description: 修改人
+          in: query
+          type: string
+        - name: startUpdateTime
+          description: 开始修改时间
+          in: query
+          type: string
+          format: date
+        - name: endUpdateTime
+          description: 结束修改时间
+          in: query
+          type: string
+          format: date
+        - name: isDelete
+          description: 是否删除 0：否 1：是
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回客户信息通讯列表
+          schema:
+            $ref: '#/definitions/CustomercommunicationEntityList'
+  /cus/customercommunication/info/{id}:
+    get:
+      tags:
+        - 客户信息通讯管理
+      summary: 获取客户信息通讯信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回客户信息通讯信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CustomercommunicationEntity'
+  /cus/customercommunication/save:
+    post:
+      tags:
+        - 客户信息通讯管理
+      summary: 添加客户信息通讯
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 客户信息通讯对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CustomercommunicationEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/customercommunication/update:
+    post:
+      tags:
+        - 客户信息通讯管理
+      summary: 修改客户信息通讯
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 客户信息通讯对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CustomercommunicationEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /cus/customercommunication/delete:
+    post:
+      tags:
+        - 客户信息通讯管理
+      summary: 删除客户信息通讯
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 客户信息通讯ID列表
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /cus/customercommunication/nameAndPhone:
+    get:
+      tags:
+        - 客户信息通讯管理
+      summary: 客户电话和姓名
+      produces:
+        - application/json
+      parameters:
+        - name: customerName
+          description: 客户姓名
+          in: query
+          type: string
+        - name: mobile
+          description: 电话
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回客户信息通讯列表
+          schema:
+            $ref: '#/definitions/CustomercommunicationEntityList'
+
+  /cus/customercommunication/queryCustomerCommunicationCustomerBaselist:
+    get:
+      tags:
+        - 客户信息通讯管理
+      summary: 分页查询客户信息通讯表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: communicationType
+          description: 通讯类型 1-移动电话 2-固定电话 3-qq 4-微信 5-邮件 6-传真 7-通讯地址
+          in: query
+          type: string
+        - name: mobile
+          description: 手机
+          in: query
+          type: string
+        - name: areaCode
+          description: 区号
+          in: query
+          type: string
+        - name: phone
+          description: 座机
+          in: query
+          type: string
+        - name: email
+          description: 电子邮件
+          in: query
+          type: string
+        - name: customerName
+          description: 姓名
+          in: query
+          type: string
+        - name: enName
+          description: 英文名
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回客户信息通讯列表
+          schema:
+            $ref: '#/definitions/CustomerCommunicationCustomerBaseVoList'
+
+
+
+  #..................分类信息表........................
+  /mma/crmclassificationinfo/list:
+    get:
+      tags:
+        - 模板管理
+      summary: 模板颜色列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: 返回模板颜色列表
+          schema:
+            $ref: '#/definitions/CrmClassificationInfoEntity'
+  /mma/crmclassificationinfo/info/{id}:
+    get:
+      tags:
+        - 模板管理
+      summary: 获取模板颜色列表
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回模板颜色列表
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CrmClassificationInfoEntity'
+  /mma/crmclassificationinfo/save:
+    post:
+      tags:
+        - 模板管理
+      summary: 添加模板颜色单条数据
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 过滤器对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmClassificationInfoEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mma/crmclassificationinfo/update:
+    post:
+      tags:
+        - 模板管理
+      summary: 修改模板颜色单条数据
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 模板颜色单条数据
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmClassificationInfoEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mma/crmclassificationinfo/delete:
+    post:
+      tags:
+        - 模板管理
+      summary: 删除模板颜色单条数据
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 模板颜色单条数据id
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  #......................多媒体模板表........................
+  /mma/crmmediatemplate/list:
+    get:
+      tags:
+        - 多媒体模板
+      summary: 模板查询列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: templateName
+          description: 模板名称
+          in: query
+          type: string
+        - name: templateType
+          description: 模板类型 1:短信 2:邮件
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回模板查询列表
+          schema:
+            $ref: '#/definitions/CrmMediaTemplateEntity'
+
+  /mma/crmmediatemplate/info/{id}:
+    get:
+      tags:
+        - 多媒体模板
+      summary: 获取模板列表单条数据
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回模板列表单条数据
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CrmMediaTemplateEntity'
+  /mma/crmmediatemplate/save:
+    post:
+      tags:
+        - 多媒体模板
+      summary: 添加模板列表单条数据
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 过滤器对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmMediaTemplateEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mma/crmmediatemplate/update:
+    post:
+      tags:
+        - 多媒体模板
+      summary: 修改模板列表单条数据
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 模板列表单条数据
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmMediaTemplateEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mma/crmmediatemplate/delete:
+    post:
+      tags:
+        - 多媒体模板
+      summary: 删除模板颜色单条数据
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 模板颜色id
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+
+
+  #...................多媒体模板附件表........................
+  /mma/crmmediatemplatefile/list:
+    get:
+      tags:
+        - 多媒体模板附件
+      summary: 多媒体模板附件表查询
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: 返回多媒体模板附件表
+          schema:
+            $ref: '#/definitions/CrmMediaTemplateFileEntity'
+
+  /mma/crmmediatemplatefile/info/{id}:
+    get:
+      tags:
+        - 多媒体模板附件
+      summary: 获取多媒体模板附件表
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回多媒体模板附件表
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CrmMediaTemplateFileEntity'
+  /mma/crmmediatemplatefile/save:
+    post:
+      tags:
+        - 多媒体模板附件
+      summary: 添加多媒体模板附件表
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 过滤器对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmMediaTemplateFileEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mma/crmmediatemplatefile/update:
+    post:
+      tags:
+        - 多媒体模板附件
+      summary: 修改多媒体模板附件表
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 多媒体模板附件表
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmMediaTemplateFileEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mma/crmmediatemplatefile/delete:
+    post:
+      tags:
+        - 多媒体模板附件
+      summary: 删除多媒体模板附件表
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 多媒体模板附件表id
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  #...................多媒体变量表........................
+  /mma/crmmediavariable/list:
+    get:
+      tags:
+        - 多媒体变量
+      summary: 多媒体变量表查询
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: 返回多媒体变量表
+          schema:
+            $ref: '#/definitions/CrmMediaVariableEntity'
+
+  /mma/crmmediavariable/info/{id}:
+    get:
+      tags:
+        - 多媒体变量
+      summary: 获取多媒体变量表
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回多媒体变量表
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CrmMediaVariableEntity'
+  /mma/crmmediavariable/save:
+    post:
+      tags:
+        - 多媒体变量
+      summary: 添加多媒体变量表
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 过滤器对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmMediaVariableEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mma/crmmediavariable/update:
+    post:
+      tags:
+        - 多媒体变量
+      summary: 修改多媒体变量表
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 多媒体变量表
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmMediaVariableEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mma/crmmediavariable/delete:
+    post:
+      tags:
+        - 多媒体变量
+      summary: 删除多媒体变量表
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 多媒体变量表id
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  #...................短信发送记录表........................
+  /mma/crmsmssendrecords/list:
+    get:
+      tags:
+        - 短信发送记录
+      summary: 短信发送记录表查询
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: customerName
+          description: 客户姓名
+          in: query
+          type: string
+        - name: isDelete
+          description: 是否删除
+          in: query
+          type: string
+        - name: templateType
+          description: 模板类型
+          in: query
+          type: string
+        - name: status
+          description: 状态
+          in: query
+          type: string
+        - name: sendNumber
+          description: 客户号码
+          in: query
+          type: string
+        - name: deliveryTime
+          description: 定时发送时间
+          in: query
+          type: date
+        - name: startTime
+          description: 开始时间
+          in: query
+          type: date
+        - name: endTime
+          description: 结束时间
+          in: query
+          type: date
+        - name: realSendTime
+          description: 实际发送时间
+          in: query
+          type: string
+        - name: batchFlag
+          description: 发送批次标志
+          in: query
+          type: string
+        - name: returnMsg
+          description: 返回信息
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回短信发送记录表
+          schema:
+            $ref: '#/definitions/CrmSmsSendRecordsEntity'
+
+  #...................短信发送记录表........................
+  /mma/crmsmssendrecords/lists:
+    post:
+      tags:
+        - 短信发送记录
+      summary: 短信发送记录表查询1111
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 过滤器对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/smsFile'
+          required: true
+      responses:
+        '200':
+          description: 返回短信发送记录表
+          schema:
+            $ref: '#/definitions/smsFile'
+  #...................短信接口........................
+  /mma/crmsmssendrecords/sendMsgs:
+    post:
+      tags:
+        - 短信发送记录
+      summary: 调用第三方短信接口
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 过滤器对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/sendMsg'
+          required: true
+      responses:
+        '200':
+          description: 返回短信发送记录表
+          schema:
+            $ref: '#/definitions/returnMsg'
+  /mma/crmsmssendrecords/changeMsgList/text:
+    get:
+      tags:
+        - 短信发送记录
+      summary: 文本内容修改
+      produces:
+        - application/json
+      parameters:
+        - name: text
+          description: text
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /mma/crmsmssendrecords/info/{id}:
+    get:
+      tags:
+        - 短信发送记录
+      summary: 获取短信发送记录表
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回短信发送记录表
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CrmSmsSendRecordsEntity'
+  /mma/crmsmssendrecords/save:
+    post:
+      tags:
+        - 短信发送记录
+      summary: 添加短信发送记录表
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 过滤器对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmSmsSendRecordsEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mma/crmsmssendrecords/update:
+    post:
+      tags:
+        - 短信发送记录
+      summary: 修改短信发送记录表
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 短信发送记录表
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmSmsSendRecordsEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /mma/crmsmssendrecords/delete:
+    post:
+      tags:
+        - 短信发送记录
+      summary: 删除短信发送记录表
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 客户信息ID列表
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  #...................短信发送记录表........................
+  /mma/crmsmssendrecords/sendMessage:
+    get:
+      tags:
+        - 短信发送记录
+      summary: 短信从中间表中拿数据用于定时发送
+      produces:
+        - application/json
+      parameters:
+      responses:
+        '200':
+          description: 短信从中间表中拿数据
+          schema:
+
+
+  /tel/crmchannelmanagement/list:
+    get:
+      tags:
+        - 渠道管理
+      summary: 渠道管理列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: trafficBrand
+          description: 话务品牌
+          in: query
+          type: string
+        - name: ctiAddressMaster
+          description: CTI地址主
+          in: query
+          type: string
+        - name: ctiAddressSlave
+          description: CTI地址从
+          in: query
+          type: string
+        - name: satisfactionNodeNumber
+          description: 满意度节点号
+          in: query
+          type: string
+        - name: broadcasterNode
+          description: 播报工号节点
+          in: query
+          type: string
+        - name: workingHoursBegin
+          description: 每日工作时间开始
+          in: query
+          type: string
+          format: date
+        - name: workingHoursEnd
+          description: 每日工作时间结束
+          in: query
+          type: string
+          format: date
+        - name: isBlacklist
+          description: 是否启用黑名单 0:否 1:是
+          in: query
+          type: string
+        - name: createCode
+          description: 创建人代码
+          in: query
+          type: string
+        - name: createName
+          description: 创建人
+          in: query
+          type: string
+        - name: startCreateTime
+          description: 开始创建时间
+          in: query
+          type: string
+          format: date
+        - name: endCreateTime
+          description: 结束创建时间
+          in: query
+          type: string
+          format: date
+        - name: updateCode
+          description: 修改人代码
+          in: query
+          type: string
+        - name: updateName
+          description: 修改人
+          in: query
+          type: string
+        - name: startUpdateTime
+          description: 开始修改时间
+          in: query
+          type: string
+          format: date
+        - name: endUpdateTime
+          description: 结束修改时间
+          in: query
+          type: string
+          format: date
+      responses:
+        '200':
+          description: 返回渠道管理列表
+          schema:
+            $ref: '#/definitions/CrmChannelManagementEntityList'
+  /tel/crmchannelmanagement/info/{id}:
+    get:
+      tags:
+        - 渠道管理
+      summary: 获取渠道管理信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回渠道管理信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CrmChannelManagementEntity'
+  /tel/crmchannelmanagement/save:
+    post:
+      tags:
+        - 渠道管理
+      summary: 添加渠道管理
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 渠道管理对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmChannelManagementEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /tel/crmchannelmanagement/update:
+    post:
+      tags:
+        - 渠道管理
+      summary: 修改渠道管理
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 渠道管理对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmChannelManagementEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /tel/crmchannelmanagement/delete:
+    post:
+      tags:
+        - 渠道管理
+      summary: 删除渠道管理
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 渠道管理ID列表
+          in: body
+          type: array
+          items:
+            type: string
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /tel/crmchanneltelephoneagent/list:
+    get:
+      tags:
+        - 渠道管理电话工号
+      summary: 渠道管理电话工号列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: channelId
+          description: 渠道管理id
+          in: query
+          type: string
+        - name: telephoneAgent
+          description: 话务工号
+          in: query
+          type: string
+        - name: skillsGroup
+          description: 技能组
+          in: query
+          type: string
+        - name: processingTime
+          description: 后续处理时长
+          in: query
+          type: integer
+        - name: ringingCount
+          description: 振铃次数
+          in: query
+          type: integer
+        - name: agentNumber
+          description: 绑定坐席工号
+          in: query
+          type: string
+        - name: agentName
+          description: 绑定坐席名称
+          in: query
+          type: string
+        - name: isAnswer
+          description: 是否自动接听 0:否 1:是
+          in: query
+          type: string
+        - name: isHangupSatisfaction
+          description: 是否自动挂机自动转满意度 0:否 1:是
+          in: query
+          type: string
+        - name: isBroadcasterAgent
+          description: 是否自动播报工号 0:否 1:是
+          in: query
+          type: string
+        - name: createCode
+          description: 创建人代码
+          in: query
+          type: string
+        - name: createName
+          description: 创建人
+          in: query
+          type: string
+        - name: startCreateTime
+          description: 开始创建时间
+          in: query
+          type: string
+          format: date
+        - name: endCreateTime
+          description: 结束创建时间
+          in: query
+          type: string
+          format: date
+        - name: updateCode
+          description: 修改人代码
+          in: query
+          type: string
+        - name: updateName
+          description: 修改人
+          in: query
+          type: string
+        - name: startUpdateTime
+          description: 开始修改时间
+          in: query
+          type: string
+          format: date
+        - name: endUpdateTime
+          description: 结束修改时间
+          in: query
+          type: string
+          format: date
+      responses:
+        '200':
+          description: 返回渠道管理电话工号列表
+          schema:
+            $ref: '#/definitions/CrmChannelTelephoneAgentEntityList'
+  /tel/crmchanneltelephoneagent/info/{id}:
+    get:
+      tags:
+        - 渠道管理电话工号
+      summary: 获取渠道管理电话工号信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回渠道管理电话工号信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CrmChannelTelephoneAgentEntity'
+  /tel/crmchanneltelephoneagent/save:
+    post:
+      tags:
+        - 渠道管理电话工号
+      summary: 添加渠道管理电话工号
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 渠道管理电话工号对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmChannelTelephoneAgentEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /tel/crmchanneltelephoneagent/update:
+    post:
+      tags:
+        - 渠道管理电话工号
+      summary: 修改渠道管理电话工号
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 渠道管理电话工号对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmChannelTelephoneAgentEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /tel/crmchanneltelephoneagent/delete:
+    post:
+      tags:
+        - 渠道管理电话工号
+      summary: 删除渠道管理电话工号
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 渠道管理电话工号ID列表
+          in: body
+          type: array
+          items:
+            type: string
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /tel/crmchanneltelephoneagent/queryTelephoneAgentInfoByExtension:
+    get:
+      tags:
+        - 渠道管理电话工号
+      summary: 通过分机号息获取渠道管理电话工号信息
+      produces:
+        - application/json
+      parameters:
+        - name: extension
+          description: 分机号
+          in: query
+          type: string
+          required: true
+        - name: agentNumber
+          description: 绑定坐席工号
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回渠道管理电话工号信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CrmChannelTelephoneAgentVo'
+
+
+  #----------------------------------------邮箱发送----------------------------------
+  /mail/crmemailaccount/list:
+    get:
+      tags:
+        - 邮件账号管理
+      summary: 邮件账号信息列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回邮件账号信息列表
+          schema:
+            $ref: '#/definitions/CrmEmailAccountEntity'
+  /mail/crmemailaccount/select:
+    get:
+      tags:
+        - 邮件账号管理
+      summary: 邮件账号信息列表
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 返回邮件账号信息列表
+          schema:
+            $ref: '#/definitions/CrmEmailAccountEntity'
+  /mail/crmemailaccount/info/{id}:
+    get:
+      tags:
+        - 邮件账号管理
+      summary: 获取邮件账号信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回邮件账号信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CrmEmailAccountEntity'
+  /mail/crmemailaccount/save:
+    post:
+      tags:
+        - 邮件账号管理
+      summary: 添加邮箱
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件账号对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmEmailAccountEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailaccount/update:
+    post:
+      tags:
+        - 邮件账号管理
+      summary: 修改邮箱
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件账号对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmEmailAccountEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /mail/crmemailaccount/delete:
+    post:
+      tags:
+        - 邮件账号管理
+      summary: 删除邮箱
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件账号ID列表
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailaccount/sinature:
+    get:
+      tags:
+        - 邮件账号管理
+      summary: 获取签名
+      produces:
+        - application/json
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /mail/crmemailattachment/list:
+    get:
+      tags:
+        - 邮件附件管理
+      summary: 邮件附件信息列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回邮件附件信息列表
+          schema:
+            $ref: '#/definitions/CrmEmailAttachmentEntity'
+  /mail/crmemailattachment/info/{id}:
+    get:
+      tags:
+        - 邮件附件管理
+      summary: 邮件附件信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回邮件附件信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CrmEmailAttachmentEntity'
+  /mail/crmemailattachment/save:
+    post:
+      tags:
+        - 邮件附件管理
+      summary: 添加邮件附件
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件附件对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmEmailAttachmentEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailattachment/update:
+    post:
+      tags:
+        - 邮件附件管理
+      summary: 修改邮件附件
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件附件对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmEmailAttachmentEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailattachment/delete:
+    post:
+      tags:
+        - 邮件附件管理
+      summary: 删除邮件附件
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件附件ID列表
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailattachment/remove/{name}:
+    get:
+      tags:
+        - 邮件附件管理
+      summary: 邮件附件信息
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          description: 附件的名字
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回邮件附件信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+  /mail/crmemailmodule/list:
+    get:
+      tags:
+        - 邮件模板管理
+      summary: 邮件模板信息列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回邮件模板信息列表
+          schema:
+            $ref: '#/definitions/CrmEmailModuleEntity'
+  /mail/crmemailmodule/select:
+    get:
+      tags:
+        - 邮件模板管理
+      summary: 邮件所有模板信息列表
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 返回邮件模板信息列表
+          schema:
+            $ref: '#/definitions/CrmEmailModuleEntity'
+  /mail/crmemailmodule/info/{id}:
+    get:
+      tags:
+        - 邮件模板管理
+      summary: 邮件模板信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回邮件模板信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CrmEmailModuleEntity'
+  /mail/crmemailmodule/save:
+    post:
+      tags:
+        - 邮件模板管理
+      summary: 添加邮件模板
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件模板对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmEmailModuleEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailmodule/update:
+    post:
+      tags:
+        - 邮件模板管理
+      summary: 修改邮件模板
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件模板对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmEmailModuleEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailmodule/delete:
+    post:
+      tags:
+        - 邮件模板管理
+      summary: 删除邮件模板
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件模板ID列表
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailmodule/saveTemplate:
+    post:
+      tags:
+        - 邮件模板管理
+      summary: 添加邮件模板[可以增加附件]
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件模板对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmEmailModuleEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailreceiver/list:
+    get:
+      tags:
+        - 邮件收件箱管理
+      summary: 邮件收件箱信息列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+        - name: mediumType
+          description: 媒体类型
+          in: query
+          type: string
+        - name: fullText
+          description: 全文
+          in: query
+          type: string
+        - name: mailSubject
+          description: 主题
+          in: query
+          type: string
+        - name: receiver
+          description: 接收者
+          in: query
+          type: string
+        - name: sender
+          description: 发件人
+          in: query
+          type: string
+        - name: receiceTime
+          description: 接收时间
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回邮件收件箱信息列表
+          schema:
+            $ref: '#/definitions/CrmEmailReceiverEntity'
+  /mail/crmemailreceiver/placeOnFileList:
+    get:
+      tags:
+        - 邮件收件箱管理
+      summary: 邮件归档箱信息列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回邮件收件箱信息列表
+          schema:
+            $ref: '#/definitions/CrmEmailReceiverEntity'
+
+  /mail/crmemailreceiver/info/{id}:
+    get:
+      tags:
+        - 邮件收件箱管理
+      summary: 邮件收件箱信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回邮件收件箱信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CrmEmailReceiverEntity'
+  /mail/crmemailreceiver/save:
+    post:
+      tags:
+        - 邮件收件箱管理
+      summary: 添加邮件收件箱
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件收件箱对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmEmailReceiverEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailreceiver/update:
+    post:
+      tags:
+        - 邮件收件箱管理
+      summary: 修改邮件收件箱
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件收件箱对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmEmailReceiverEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailreceiver/delete:
+    post:
+      tags:
+        - 邮件收件箱管理
+      summary: 删除邮件收件箱
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件收件箱ID列表
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailreceiver/receiver:
+    post:
+      tags:
+        - 邮件收件箱管理
+      summary: 接收全部邮件
+      produces:
+        - application/json
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailreceiver/placeOnFile/{id}:
+    post:
+      tags:
+        - 邮件收件箱管理
+      summary: 邮件归档
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: 收件ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailreceiver/bindingCustomer/{mailId}/{customId}:
+    post:
+      tags:
+        - 邮件收件箱管理
+      summary: 关联客户
+      produces:
+        - application/json
+      parameters:
+        - name: mailId
+          description: 邮件ID
+          in: path
+          type: string
+          required: true
+        - name: customId
+          description: 客户ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /mail/crmemailsend/list:
+    get:
+      tags:
+        - 邮件发件箱管理
+      summary: 邮件发件箱信息列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回邮件发件箱信息列表
+          schema:
+            $ref: '#/definitions/CrmEmailSendEntity'
+  /mail/crmemailsend/info/{id}:
+    get:
+      tags:
+        - 邮件发件箱管理
+      summary: 邮件发件箱信息
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回邮件发件箱信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+              user:
+                $ref: '#/definitions/CrmEmailSendEntity'
+  /mail/crmemailsend/save:
+    post:
+      tags:
+        - 邮件发件箱管理
+      summary: 添加邮件发件箱
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件发件箱对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmEmailSendEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailsend/update:
+    post:
+      tags:
+        - 邮件发件箱管理
+      summary: 修改邮件发件箱
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件发件箱对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmEmailSendEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /mail/crmemailsend/delete:
+    post:
+      tags:
+        - 邮件发件箱管理
+      summary: 删除邮件发件箱
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 邮件发件箱ID列表
+          in: body
+          type: array
+          items:
+            type: string
+            default: 0
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  #邮件多附件发送
+  #/mail/crmemailsend/sendMail
+  /mail/crmemailsend/sendMail:
+    post:
+      tags:
+        - 邮件发件箱管理
+      summary: 邮件发送
+      parameters:
+        - name: body
+          description: 邮件发件箱对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmEmailSendEntity'
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+        500:
+          description: "服务器内部出错"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /mail/crmemailsend/upload:
+    post:
+      tags:
+        - 邮件发件箱管理
+      summary: 附件上传
+      operationId: "upload"
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: attachment
+          in: formData
+          type: file
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+        500:
+          description: "服务器内部出错"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /mail/crmemailsend/draft:
+    post:
+      tags:
+        - 邮件发件箱管理
+      summary: 保存草稿件
+      parameters:
+        - name: body
+          description: 邮件发件箱对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/CrmEmailSendEntity'
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+        500:
+          description: "服务器内部出错"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /mail/crmemailsend/mailRelay/{id}:
+    post:
+      tags:
+        - 邮件发件箱管理
+      summary: 通过id查询附件进行保存
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: ID
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回信息
+          schema:
+            type: object
+            properties:
+              code:
+                description: 状态码 0：成功  非0：失败
+                type: integer
+                format: int32
+
+#定义数据模型
+definitions:
+  R:
+      type: object
+      properties:
+        code:
+          description: 状态码 0：成功  非0：失败
+          type: integer
+          format: int32
+        msg:
+          description: 失败原因
+          type: string
+  Login:
+      type: object
+      properties:
+        code:
+          description: 状态码 0：成功  非0：失败
+          type: integer
+          format: int32
+        token:
+          description: token
+          type: string
+        expire:
+          description: 过期时长
+          type: integer
+          format: int32
+        msg:
+          description: 失败原因
+          type: string
+  LoginForm:
+    type: object
+    properties:
+      username:
+        description: 用户名
+        type: string
+      password:
+        description: 密码
+        type: string
+      extension:
+        description: 分机号
+        type: string
+  PasswordForm:
+    type: object
+    properties:
+      password:
+        description: 原密码
+        type: string
+      newPassword:
+        description: 新密码
+        type: string
+  SysUserEntity:
+    type: object
+    properties:
+      userId:
+        description: 用户ID
+        type: integer
+        format: int64
+      username:
+        description: 用户名
+        type: string
+      password:
+        description: 密码
+        type: string
+      realname:
+        description: 用户真实名
+        type: string
+      extension:
+        description: 分机号
+        type: string
+      isExtension:
+        description: 是否绑定分机号
+        type: string
+      deptId:
+        description: 部门ID
+        type: integer
+        format: int64
+      deptName:
+        description: 部门名称
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      mobile:
+        description: 手机号
+        type: string
+      status:
+        description: 状态  0：禁用   1：正常
+        type: integer
+        format: int32
+      roleIdList:
+        description: 角色ID列表
+        type: array
+        items:
+          type: integer
+          format: int64
+      createTime:
+        description: 创建时间
+        type: string
+        format: date-time
+  SysUserEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/SysUserEntity'
+  SysUserEntityEdit:
+      type: object
+      properties:
+        userId:
+          description: 用户ID
+          type: integer
+          format: int64
+        username:
+          description: 用户名
+          type: string
+        password:
+          description: 密码
+          type: string
+        realname:
+          description: 用户真实名
+          type: string
+        extension:
+          description: 分机号
+          type: string
+        isExtension:
+          description: 是否绑定分机号
+          type: string
+        deptId:
+          description: 部门ID
+          type: integer
+          format: int64
+        email:
+          description: 邮箱
+          type: string
+        mobile:
+          description: 手机号
+          type: string
+        status:
+          description: 状态  0：禁用   1：正常
+          type: integer
+          format: int32
+        roleIdList:
+          description: 角色ID列表
+          type: array
+          items:
+            type: integer
+            format: int32
+
+
+  SysLogEntity:
+    type: object
+    properties:
+      id:
+        description: 日志ID
+        type: integer
+        format: int64
+      username:
+        description: 用户名
+        type: string
+      operation:
+        description: 用户操作
+        type: string
+      method:
+        description: 请求方法
+        type: string
+      params:
+        description: 请求参数
+        type: string
+      time:
+        description: 执行时长(毫秒)
+        type: integer
+        format: int64
+      ip:
+        description: IP地址
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+        format: date-time
+  SysLogEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/SysLogEntity'
+
+  SysDictEntity:
+    type: object
+    properties:
+      id:
+        description: 字典ID
+        type: integer
+        format: int64
+      name:
+        description: 字典名称
+        type: string
+      type:
+        description: 字典类型
+        type: string
+      code:
+        description: 字典码
+        type: string
+      value:
+        description: 字典值
+        type: string
+      orderNum:
+        description: 排序
+        type: integer
+        format: int32
+      remark:
+        description: 备注
+        type: string
+      delFlag:
+        description: 删除标记  -1：已删除  0：正常
+        type: integer
+        format: int32
+  SysDictEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/SysDictEntity'
+
+
+  SysOssEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: integer
+        format: int64
+      url:
+        description: URL地址
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+        format: date-time
+  SysOssEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/SysOssEntity'
+  SysCloudStorageEntity:
+    type: object
+    properties:
+      type:
+        description: 类型 1：七牛  2：阿里云  3：腾讯云
+        type: integer
+        format: int32
+      qiniuDomain:
+        description: 七牛绑定的域名
+        type: string
+      qiniuPrefix:
+        description: 七牛路径前缀
+        type: string
+      qiniuAccessKey:
+        description: 七牛ACCESS_KEY
+        type: string
+      qiniuSecretKey:
+        description: 七牛SECRET_KEY
+        type: string
+      qiniuBucketName:
+        description: 七牛存储空间名
+        type: string
+      aliyunDomain:
+        description: 阿里云绑定的域名
+        type: string
+      aliyunPrefix:
+        description: 阿里云路径前缀
+        type: string
+      aliyunEndPoint:
+        description: 阿里云EndPoint
+        type: string
+      aliyunAccessKeyId:
+        description: 阿里云AccessKeyId
+        type: string
+      aliyunAccessKeySecret:
+        description: 阿里云AccessKeySecret
+        type: string
+      aliyunBucketName:
+        description: 阿里云BucketName
+        type: string
+      qcloudDomain:
+        description: 腾讯云绑定的域名
+        type: string
+      qcloudPrefix:
+        description: 腾讯云路径前缀
+        type: string
+      qcloudAppId:
+        description: 腾讯云AppId
+        type: string
+      qcloudSecretId:
+        description: 腾讯云SecretId
+        type: string
+      qcloudSecretKey:
+        description: 腾讯云SecretKey
+        type: string
+      qcloudBucketName:
+        description: 腾讯云BucketName
+        type: string
+      qcloudRegion:
+        description: 腾讯云COS所属地区
+        type: string
+  FileUpload:
+      type: object
+      properties:
+        code:
+          description: 状态码 0：成功  非0：失败
+          type: integer
+          format: int32
+        url:
+          description: 文件URL地址
+          type: string
+        msg:
+          description: 失败原因
+          type: string
+
+  ScheduleJobEntity:
+    type: object
+    properties:
+      jobId:
+        description: 任务ID
+        type: integer
+        format: int64
+      beanName:
+        description: spring bean名称
+        type: string
+      methodName:
+        description: 方法名
+        type: string
+      params:
+        description: 参数
+        type: string
+      cronExpression:
+        description: cron表达式
+        type: string
+      status:
+        description: 任务状态  0：正常  1：暂停
+        type: integer
+        format: int32
+      remark:
+        description: 备注
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+        format: date-time
+  ScheduleJobEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/ScheduleJobEntity'
+
+  ScheduleJobLogEntity:
+    type: object
+    properties:
+      logId:
+        description: 日志id
+        type: integer
+        format: int64
+      jobId:
+        description: 任务id
+        type: integer
+        format: int64
+      beanName:
+        description: spring bean名称
+        type: string
+      methodName:
+        description: 方法名
+        type: string
+      params:
+        description: 参数
+        type: string
+      status:
+        description: 任务状态    0：成功    1：失败
+        type: integer
+        format: int32
+      error:
+        description: 失败信息
+        type: string
+      times:
+        description: 耗时(单位：毫秒)
+        type: integer
+        format: int32
+      createTime:
+        description: 创建时间
+        type: string
+        format: date-time
+  ScheduleJobLogEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/ScheduleJobLogEntity'
+
+  FieldConfigurationEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      dataName:
+        description: 数据名称
+        type: string
+      dataAttribute:
+        description: 数据字段属性
+        type: string
+      displayName:
+        description: 显示名称
+        type: string
+      fieldType:
+        description: 字段类型 1字符 2-数值 3-日期
+        type: string
+      type:
+        description: 表类型
+        type: string
+      isEnable:
+        description: 是否启用 0-否 1-是
+        type: string
+      isKeyword:
+        description: 是否关键字 0-否1-是
+        type: string
+      isQuery:
+        description: 是否查询条件 0-否 1-是
+        type: string
+      formType:
+        description: 表单类型 1-精确查询(文本) 2-模糊查询(文本)  3-下拉 4-单选 5-复选 6-区间查询左(文本)  7-区间查询右(文本)
+        type: string
+      baseDatatype:
+        description: 基础数据类型
+        type: string
+      isListfield:
+        description: 是否列表字段 0-否 1-是
+        type: string
+      queryNum:
+        description: 查询序号
+        type: integer
+        format: int32
+      listNum:
+        description: 列表序号
+        type: integer
+        format: int32
+      detailsNum:
+        description: 详情序号
+        type: integer
+        format: int32
+      updateCode:
+        description: 修改人代码
+        type: string
+      updateName:
+        description: 修改人
+        type: string
+      updateTime:
+        description: 修改时间
+        type: string
+
+  FieldConfigurationEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/FieldConfigurationEntity'
+
+  DataTraceabilityEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      dataName:
+        description: 数据名称
+        type: string
+      dataAttribute:
+        description: 数据字段属性
+        type: string
+      displayName:
+        description: 显示名称
+        type: string
+      type:
+        description: 表类型
+        type: string
+      dataValue:
+        description: 数据值
+        type: string
+      updateCode:
+        description: 修改人代码
+        type: string
+      updateName:
+        description: 修改人
+        type: string
+      updateTime:
+        description: 修改时间
+        type: string
+  DataTraceabilityEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/DataTraceabilityEntity'
+
+  CustomerTrajectoryEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      customerId:
+        description: 客户id
+        type: string
+      trajectoryName:
+        description: 轨迹名称
+        type: string
+      trajectoryContent:
+        description: 轨迹内容
+        type: string
+      trajectoryType:
+        description: 轨迹类型
+        type: string
+      createCode:
+        description: 创建人代码
+        type: string
+      createName:
+        description: 创建人
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+      updateCode:
+        description: 修改人代码
+        type: string
+      updateName:
+        description: 修改人
+        type: string
+      updateTime:
+        description: 修改时间
+        type: string
+      customerTrajectorySonList:
+        description: 客户轨迹子表列表
+        type: array
+        items:
+          $ref: '#/definitions/CustomerTrajectorySonEntity'
+
+  CustomerTrajectoryEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/CustomerTrajectoryEntity'
+
+  CustomerTrajectorySonEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      trajectoryId:
+        description: 轨迹id
+        type: string
+      businessId:
+        description: 业务id
+        type: string
+      businessName:
+        description: 业务名称
+        type: string
+      businessUrl:
+        description: 业务url
+        type: string
+      createCode:
+        description: 创建人代码
+        type: string
+      createName:
+        description: 创建人
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+      updateCode:
+        description: 修改人代码
+        type: string
+      updateName:
+        description: 修改人
+        type: string
+      updateTime:
+        description: 修改时间
+        type: string
+
+  CustomerTrajectorySonEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/CustomerTrajectorySonEntity'
+
+  FilterEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      filterName:
+        description: 过滤器名称
+        type: string
+      filterDescription:
+        description: 过滤器描述
+        type: string
+      isPublic:
+        description: 是否公有 0-否 1-是
+        type: string
+      createCode:
+        description: 创建人代码
+        type: string
+      createName:
+        description: 创建人
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+      filterFieldList:
+        description: 过滤器字段列表
+        type: array
+        items:
+          $ref: '#/definitions/FilterFieldEntity'
+
+  FilterEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/FilterEntity'
+
+  FilterFieldEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      filterId:
+        description: 过滤器id
+        type: string
+      dataName:
+        description: 数据名称
+        type: string
+      dataAttribute:
+        description: 数据字段属性
+        type: string
+      displayName:
+        description: 显示名称
+        type: string
+      type:
+        description: 表类型
+        type: string
+      dataValue:
+        description: 数据值
+        type: string
+
+  FilterFieldEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/FilterFieldEntity'
+
+  CustomerBaseEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      surname:
+        description: 姓
+        type: string
+      customerName:
+        description: 姓名
+        type: string
+      enName:
+        description: 英文名
+        type: string
+      beforeName:
+        description: 曾用名
+        type: string
+      nickname:
+        description: 昵称
+        type: string
+      idNumber:
+        description: 身份证号码
+        type: string
+      driverNumber:
+        description: 驾照号码
+        type: string
+      nationality:
+        description: 国籍
+        type: string
+      nation:
+        description: 民族
+        type: string
+      nativePlace:
+        description: 籍贯
+        type: string
+      sex:
+        description: 性别
+        type: string
+      age:
+        description: 年龄
+        type: integer
+        format: int32
+      birthday:
+        description: 生日
+        type: string
+      height:
+        description: 身高
+        type: integer
+        format: int32
+      weight:
+        description: 体重
+        type: integer
+        format: int32
+      bloodType:
+        description: 血型
+        type: string
+      politicalAppearance:
+        description: 政治面貌
+        type: string
+      birth:
+        description: 生育
+        type: string
+      workingYears:
+        description: 工龄
+        type: integer
+        format: int32
+      maritalStatus:
+        description: 婚姻状况
+        type: string
+      customerEducation:
+        description: 客户学历
+        type: string
+      headUrl:
+        description: 头像地址
+        type: string
+      company:
+        description: 公司
+        type: string
+      department:
+        description: 部门
+        type: string
+      duty:
+        description: 职务
+        type: string
+      belongCode:
+        description: 所属坐席
+        type: string
+      belongInstitutions:
+        description: 坐席所属机构
+        type: string
+      customerNotes:
+        description: 客户备注
+        type: string
+      isEffective:
+        description: 是否有效 0-否 1-是
+        type: string
+      createCode:
+        description: 创建人代码
+        type: string
+      createName:
+        description: 创建人
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+      updateCode:
+        description: 修改人代码
+        type: string
+      updateName:
+        description: 修改人
+        type: string
+      updateTime:
+        description: 修改时间
+        type: string
+      isDelete:
+        description: 是否删除 0：否 1：是
+        type: string
+
+
+  CustomerBaseEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/CustomerBaseEntity'
+
+  CustomercommunicationEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      customerId:
+        description: 客户id
+        type: string
+      communicationType:
+        description: 通讯类型 1-移动电话 2-固定电话 3-qq 4-微信 5-邮件 6-传真 7-通讯地址
+        type: string
+      mobile:
+        description: 手机
+        type: string
+      areaCode:
+        description: 区号
+        type: string
+      phone:
+        description: 座机
+        type: string
+      extensionNum:
+        description: 分机号
+        type: string
+      qq:
+        description: qq
+        type: string
+      weixin:
+        description: 微信
+        type: string
+      email:
+        description: 电子邮件
+        type: string
+      fax:
+        description: 传真
+        type: string
+      province:
+        description: 省
+        type: string
+      city:
+        description: 市
+        type: string
+      area:
+        description: 区
+        type: string
+      address:
+        description: 地址
+        type: string
+      postCode:
+        description: 邮政编码
+        type: string
+      isContact:
+        description: 是否常用联系方式 0-否 1-是
+        type: string
+      createCode:
+        description: 创建人代码
+        type: string
+      createName:
+        description: 创建人
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+      updateCode:
+        description: 修改人代码
+        type: string
+      updateName:
+        description: 修改人
+        type: string
+      updateTime:
+        description: 修改时间
+        type: string
+      isDelete:
+        description: 是否删除 0：否 1：是
+        type: string
+      customerName:
+        description: 姓名
+        type: string
+
+  CustomerCommunicationCustomerBaseVoList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/CustomerCommunicationCustomerBaseVo'
+
+  CustomerCommunicationCustomerBaseVo:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      customerId:
+        description: 客户id
+        type: string
+      communicationType:
+        description: 通讯类型 1-移动电话 2-固定电话 3-qq 4-微信 5-邮件 6-传真 7-通讯地址
+        type: string
+      mobile:
+        description: 手机
+        type: string
+      areaCode:
+        description: 区号
+        type: string
+      phone:
+        description: 座机
+        type: string
+      extensionNum:
+        description: 分机号
+        type: string
+      qq:
+        description: qq
+        type: string
+      weixin:
+        description: 微信
+        type: string
+      email:
+        description: 电子邮件
+        type: string
+      fax:
+        description: 传真
+        type: string
+      province:
+        description: 省
+        type: string
+      city:
+        description: 市
+        type: string
+      area:
+        description: 区
+        type: string
+      address:
+        description: 地址
+        type: string
+      postCode:
+        description: 邮政编码
+        type: string
+      isContact:
+        description: 是否常用联系方式 0-否 1-是
+        type: string
+      createCode:
+        description: 创建人代码
+        type: string
+      createName:
+        description: 创建人
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+      updateCode:
+        description: 修改人代码
+        type: string
+      updateName:
+        description: 修改人
+        type: string
+      updateTime:
+        description: 修改时间
+        type: string
+      isDelete:
+        description: 是否删除 0：否 1：是
+        type: string
+      surname:
+        description: 姓
+        type: string
+      customerName:
+        description: 姓名
+        type: string
+      enName:
+        description: 英文名
+        type: string
+      beforeName:
+        description: 曾用名
+        type: string
+      nickname:
+        description: 昵称
+        type: string
+      idNumber:
+        description: 身份证号码
+        type: string
+      driverNumber:
+        description: 驾照号码
+        type: string
+      nationality:
+        description: 国籍
+        type: string
+      nation:
+        description: 民族
+        type: string
+      nativePlace:
+        description: 籍贯
+        type: string
+      sex:
+        description: 性别
+        type: string
+      age:
+        description: 年龄
+        type: integer
+        format: int32
+      birthday:
+        description: 生日
+        type: string
+      height:
+        description: 身高
+        type: integer
+        format: int32
+      weight:
+        description: 体重
+        type: integer
+        format: int32
+      bloodType:
+        description: 血型
+        type: string
+      politicalAppearance:
+        description: 政治面貌
+        type: string
+      birth:
+        description: 生育
+        type: string
+      workingYears:
+        description: 工龄
+        type: integer
+        format: int32
+      maritalStatus:
+        description: 婚姻状况
+        type: string
+      customerEducation:
+        description: 客户学历
+        type: string
+      headUrl:
+        description: 头像地址
+        type: string
+      company:
+        description: 公司
+        type: string
+      department:
+        description: 部门
+        type: string
+      duty:
+        description: 职务
+        type: string
+      belongCode:
+        description: 所属坐席
+        type: string
+      belongInstitutions:
+        description: 坐席所属机构
+        type: string
+      customerNotes:
+        description: 客户备注
+        type: string
+      isEffective:
+        description: 是否有效 0-否 1-是
+        type: string
+
+
+  smsFile:
+    type: object
+    properties:
+      surname:
+        description: 客户姓
+        type: string
+      customerName:
+        description: 客户名
+        type: string
+      deliveryTime:
+        description: 发送时间
+        type: string
+      mobile:
+        description: 客户号码
+        type: string
+      status:
+        description: 状态（已发送，发送失败，暂存）
+        type: string
+      templateType:
+        description: 模板类型
+        type: string
+      startTime:
+        description: 发送时间
+        type: string
+      endTime:
+        description: 发送时间
+        type: string
+  #..............................短信发送接口........................
+  sendMsg:
+    type: object
+    properties:
+      command:
+        description: 传固定值sendSMSMD5
+        type: string
+      username:
+        description: 短信发送账号
+        type: string
+      pwd:
+        description: 登录密码的MD5(32位加密且大写)
+        type: string
+      sendNumber:
+        description: 手机号码（多个号码用英文逗号或者分号隔开），不能超过100个号码
+        type: string
+      content:
+        description: 短信内容(最多140字符)
+        type: string
+      incode:
+        description: 字符在传递过程中的编码,与outcode保持一致,GBK或UTF-8
+        type: string
+      outcode:
+        description: 字符初始编码与incode保持一致, GBK或UTF-8
+        type: string
+      rstype:
+        description: 可选参数
+        type: string
+      pfex:
+        description: pfex为违禁词过滤开关 0表示开启 ; 1表示关闭 ; 空表示默认开启
+        type: string
+      extCode:
+        description: 扩展码参数只允许数字字符
+        type: string
+  #..............................短信接收接口........................
+  returnMsg:
+    type: object
+    properties:
+      flag:
+        description: 返回标示位
+        type: string
+      retMsg:
+        description: 返回的信息
+        type: string
+        format: int32
+  CustomercommunicationEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/CustomercommunicationEntity'
+#........................分类信息表..................
+  CrmClassificationInfoEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      classificationName:
+        description: 分类名称
+        type: string
+      infoType:
+        description: 信息类型 crm_customer_base:客户信息表 crm_customer_communication:客户信息通讯表
+        type: string
+      color:
+        description: 颜色
+        type: string
+      colorCode:
+        description: 颜色代码
+        type: string
+      createCode:
+        description: 创建人代码
+        type: string
+      createName:
+        description: 创建人
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+
+
+  #........................多媒体模板表..................
+  CrmMediaTemplateEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      templateName:
+        description: 模板名称
+        type: string
+      templateType:
+        description: 模板类型 1:短信 2:邮件
+        type: string
+      isEnabled:
+        description: 是否启用 0:否 1:是
+        type: string
+      templateContent:
+        description: 模板正文
+        type: string
+      isFile:
+        description: 是否有附件 0:否 1:是
+        type: string
+      remark:
+        description: 备注
+        type: string
+      createCode:
+        description: 创建人代码
+        type: string
+      createName:
+        description: 创建人
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+      updateCode:
+        description: 修改人代码
+        type: string
+      updateName:
+        description: 修改人
+        type: string
+      updateTime:
+        description: 修改时间
+        type: string
+
+
+  #........................多媒体模板附件表..................
+  CrmMediaTemplateFileEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      templateId:
+        description: 模板id
+        type: string
+      fileName:
+        description: 文件名称
+        type: string
+      fileUrl:
+        description: 文件名称地址
+        type: string
+
+  #........................多媒体变量表..................
+  CrmMediaVariableEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      variableName:
+        description: 变量名称
+        type: string
+      variableField:
+        description: 变量存储字段
+        type: string
+      variableAttribute:
+        description: 变量存储属性
+        type: string
+      variableType:
+        description: 变量类型1:系统 2:常用 3:自定义
+        type: string
+      variableClassificationId:
+        description: 变量所属分类
+        type: string
+      referencesCount:
+        description: 引用次数
+        type: integer
+        format: int32
+      createCode:
+        description: 创建人代码
+        type: string
+      createName:
+        description: 创建人
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+
+  #........................短信发送记录表..................
+  CrmSmsSendRecordsEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      templateId:
+        description: 模板id
+        type: string
+      customerId:
+        description: 客户id
+        type: long
+        format: int32
+      sendNumber:
+        description: 发送号码
+        type: string
+      content:
+        description: 发送内容
+        type: string
+      status:
+        description: 状态 1:成功 2:失败
+        type: string
+      isDelivery:
+        description: 是否定时发送 0:否 1:是
+        type: string
+      deliveryTime:
+        description: 定时发送时间
+        type: string
+      createCode:
+        description: 创建人代码
+        type: string
+      createName:
+        description: 创建人
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+      realSendTime:
+        description: 实际发送时间
+        type: string
+      batchFlag:
+        description: 发送批次标志
+        type: string
+      returnMsg:
+        description: 返回信息
+        type: string
+
+
+
+  CrmChannelManagementEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      trafficBrand:
+        description: 话务品牌
+        type: string
+      ctiAddressMaster:
+        description: CTI地址主
+        type: string
+      ctiAddressSlave:
+        description: CTI地址从
+        type: string
+      satisfactionNodeNumber:
+        description: 满意度节点号
+        type: string
+      broadcasterNode:
+        description: 播报工号节点
+        type: string
+      workingHoursBegin:
+        description: 每日工作时间开始
+        type: date
+      workingHoursEnd:
+        description: 每日工作时间结束
+        type: date
+      isBlacklist:
+        description: 是否启用黑名单 0:否 1:是
+        type: string
+      createCode:
+        description: 创建人代码
+        type: string
+      createName:
+        description: 创建人
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+      updateCode:
+        description: 修改人代码
+        type: string
+      updateName:
+        description: 修改人
+        type: string
+      updateTime:
+        description: 修改时间
+        type: string
+
+  CrmChannelManagementEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/CrmChannelManagementEntity'
+
+
+
+  CrmChannelTelephoneAgentEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      channelId:
+        description: 渠道管理id
+        type: string
+      telephoneAgent:
+        description: 话务工号
+        type: string
+      agentPassword:
+        description: 工号密码
+        type: string
+      skillsGroup:
+        description: 技能组
+        type: string
+      processingTime:
+        description: 后续处理时长
+        type: integer
+        format: int32
+      ringingCount:
+        description: 振铃次数
+        type: integer
+        format: int32
+      agentNumber:
+        description: 绑定坐席工号
+        type: string
+      agentName:
+        description: 绑定坐席名称
+        type: string
+      createCode:
+        description: 创建人代码
+        type: string
+      createName:
+        description: 创建人
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+      updateCode:
+        description: 修改人代码
+        type: string
+      updateName:
+        description: 修改人
+        type: string
+      updateTime:
+        description: 修改时间
+        type: string
+
+
+  CrmChannelTelephoneAgentEntityList:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      page:
+        type: object
+        properties:
+          totalCount:
+            description: 总记录数
+            type: integer
+            format: int32
+          pageSize:
+            description: 每页记录数
+            type: integer
+            format: int32
+          totalPage:
+            description: 总页数
+            type: integer
+            format: int32
+          currPage:
+            description: 当前页数
+            type: integer
+            format: int32
+          list:
+            type: array
+            items:
+              $ref: '#/definitions/CrmChannelTelephoneAgentEntity'
+
+  CrmChannelTelephoneAgentVo:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      channelId:
+        description: 渠道管理id
+        type: string
+      telephoneAgent:
+        description: 话务工号
+        type: string
+      agentPassword:
+        description: 工号密码
+        type: string
+      skillsGroup:
+        description: 技能组
+        type: string
+      processingTime:
+        description: 后续处理时长
+        type: integer
+        format: int32
+      ringingCount:
+        description: 振铃次数
+        type: integer
+        format: int32
+      agentNumber:
+        description: 绑定坐席工号
+        type: string
+      agentName:
+        description: 绑定坐席名称
+        type: string
+      trafficBrand:
+        description: 话务品牌
+        type: string
+      ctiAddressMaster:
+        description: CTI地址主
+        type: string
+      ctiAddressSlave:
+        description: CTI地址从
+        type: string
+      satisfactionNodeNumber:
+        description: 满意度节点号
+        type: string
+      broadcasterNode:
+        description: 播报工号节点
+        type: string
+      workingHoursBegin:
+        description: 每日工作时间开始
+        type: date
+      workingHoursEnd:
+        description: 每日工作时间结束
+        type: date
+      isBlacklist:
+        description: 是否启用黑名单 0:否 1:是
+        type: string
+
+
+  #--------------------------------------邮件发送-------------------------------
+
+  CrmEmailAccountEntity:
+    type: object
+    properties:
+      configId:
+        description: ID
+        type: string
+      mailAddress:
+        description: 邮箱地址
+        type: string
+      password:
+        description: 邮箱密码
+        type: string
+      displayedName:
+        description: 显示名称
+        type: string
+      sendName:
+        description: 发送名称
+        type: string
+      mailSet:
+        description: 邮箱设置
+        type: string
+      scheduleGet:
+        description: 定时收取
+        type: string
+      mailType:
+        description: 邮箱类型
+        type: string
+      receiveMailServer:
+        description: 收件服务器
+        type: string
+      receiveServerPort:
+        description: 收件服务器端口
+        type: string
+      sendMailServer:
+        description: 发件服务器
+        type: string
+      sendServerPort:
+        description: 发件服务器端口
+        type: string
+      isSecretySend:
+        description: 是否加密传输：  0  否，1  是，     如果服务器支持，就使用STARTTLS加密传输
+        type: string
+      isPermanentSave:
+        description: 是否永久保存：  0  否，1  是，     服务器数据备份，在服务器上永久保存
+        type: string
+      isVertify:
+        description: 是否进行发件服务器身份验证： 0  否   1  是
+        type: string
+      signature:
+        description: 签名
+        type: string
+      createCode:
+        description: 创建人代码
+        type: string
+      createName:
+        description: 创建人
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+        format: date
+      updateCode:
+        description: 修改人代码
+        type: string
+      updateName:
+        description: 修改人
+        type: string
+      updateTime:
+        description: 修改时间
+        type: string
+        format: date
+  CrmEmailAttachmentEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      name:
+        description: 附件名字
+        type: string
+      url:
+        description: 附件路径
+        type: string
+      createTime:
+        description: 附件创建时间
+        type: string
+        format: date
+      absolutePath:
+        description: 绝对路径
+        type: string
+      moduleId:
+        description: moduleId
+        type: string
+
+
+  CrmEmailModuleEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      moduleName:
+        description: 模板名称
+        type: string
+      moduleContent:
+        description: 模板内容
+        type: string
+      createCode:
+        description: 创建人代码
+        type: string
+      createName:
+        description: 创建人
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+        format: date
+      updateCode:
+        description: 修改人代码
+        type: string
+      updateName:
+        description: 修改人
+        type: string
+      updateTime:
+        description: 修改时间
+        type: string
+        format: date
+      isStart:
+        description: 是否启用:0 否 1 是
+        type: string
+      isDelete:
+        description: 是否删除 0：否 1：是
+        type: string
+      mailCopy:
+        description: 邮件抄送人
+        type: string
+      securitySend:
+        description: 邮件密送人
+        type: string
+      receiver:
+        description: 邮件接收者
+        type: string
+      mailSubject:
+        description: 邮件主题
+        type: string
+      templateType:
+        description: 模板类型
+        type: string
+
+
+      list:
+        type: array
+        items:
+          $ref: '#/definitions/CrmEmailAttachmentEntity'
+  CrmEmailReceiverEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      sender:
+        description: 发件人
+        type: string
+      receiver:
+        description: 收件人
+        type: string
+      mailSubject:
+        description: 邮件主题
+        type: string
+      fullText:
+        description: 全文
+        type: string
+      mediumType:
+        description: 媒体类型： 邮件
+        type: string
+      mailCopy:
+        description: 抄送人
+        type: string
+      securitySend:
+        description: 密送人
+        type: string
+      mailContent:
+        description: 邮件内容
+        type: string
+      isReplay:
+        description: 是否回复： 0  否   1  是
+        type: string
+      customId:
+        description: 关联客户ID
+        type: string
+      customName:
+        description: 关联客户姓名
+        type: string
+      mailType:
+        description: 邮件类型：1、 草稿件  2、及时发送件  3、定时件  4、收件  5、 归档件
+        type: string
+      moduleId:
+        description: 邮件模板ID
+        type: string
+      mailAttachmentId:
+        description: 邮件附件ID
+        type: string
+      mailOwner:
+        description: 邮件所属者
+        type: string
+      receiceTime:
+        description: 接收时间
+        type: string
+        format: date
+      updateTime:
+        description: 修改时间
+        type: string
+        format: date
+      isDelete:
+        description: 是否删除 0：否 1：是
+        type: string
+  CrmEmailSendEntity:
+    type: object
+    properties:
+      id:
+        description: ID
+        type: string
+      sendAddress:
+        description: 发送地址
+        type: string
+      sendType:
+        description: 发送类型：1  及时发送   2 定时发送
+        type: string
+      receiver:
+        description: 收件人
+        type: string
+      mailSubject:
+        description: 邮件主题
+        type: string
+      mailCopy:
+        description: 抄送人
+        type: string
+      securitySend:
+        description: 密送人
+        type: string
+      mailContent:
+        description: 邮件内容
+        type: string
+      scheduleTime:
+        description: 定时发送时间
+        type: string
+        format: date
+      sender:
+        description: 发件人
+        type: string
+      mailType:
+        description: 邮件类型：1、 草稿件  2、及时发送件  3、定时件  4、收件  5、 归档件
+        type: string
+      moduleId:
+        description: 邮件模板ID
+        type: string
+      mailAttachmentId:
+        description: 邮件附件ID
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+        format: date
+      updateTime:
+        description: 修改时间
+        type: string
+        format: date
+      isDelete:
+        description: 是否删除 0：否 1：是
+        type: string
+      isScheduleSend:
+        description: 是否定时发送 0：否 1：是
+        type: string
+
+
+

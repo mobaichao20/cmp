@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.cus.dao.CustomerTrajectorySonDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.cus.entity.CustomerTrajectorySonEntity" id="customerTrajectorySonMap">
+        <result property="id" column="id"/>
+        <result property="trajectoryId" column="trajectory_id"/>
+        <result property="businessId" column="business_id"/>
+        <result property="businessName" column="business_name"/>
+        <result property="businessUrl" column="business_url"/>
+        <result property="createCode" column="create_code"/>
+        <result property="createName" column="create_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateCode" column="update_code"/>
+        <result property="updateName" column="update_name"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+    <select id="queryCustomerTrajectorySonList" resultType="io.cmp.modules.cus.entity.CustomerTrajectorySonEntity">
+        select * from crm_customer_trajectory_son where trajectory_id = #{trajectoryId}
+    </select>
+
+    <delete id="deleteBatch">
+        delete from crm_customer_trajectory_son where trajectory_id in
+        <foreach item="trajectoryId" collection="array" open="(" separator="," close=")">
+            #{trajectoryId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.cam.dao.CampaignStateconfigDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.cam.entity.CampaignStateconfigEntity" id="campaignStateconfigMap">
+        <result property="stateconfigId" column="stateconfig_id"/>
+        <result property="campaignId" column="campaign_id"/>
+        <result property="stateconfigName" column="stateconfig_name"/>
+        <result property="stateconfigType" column="stateconfig_type"/>
+        <result property="stateconfigNameDes" column="stateconfig_name_des"/>
+        <result property="stateconfigUnit" column="stateconfig_unit"/>
+        <result property="upperStateconfigId" column="upper_stateconfig_id"/>
+        <result property="stateconfigSequence" column="stateconfig_sequence"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createCode" column="create_code"/>
+        <result property="createName" column="create_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateCode" column="update_code"/>
+        <result property="updateName" column="update_name"/>
+    </resultMap>
+
+
+</mapper>

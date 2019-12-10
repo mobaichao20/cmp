@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.mail.dao.CrmEmailSendDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.mail.entity.CrmEmailSendEntity" id="crmEmailSendMap">
+        <result property="id" column="id"/>
+        <result property="sendAddress" column="send_address"/>
+        <result property="sendType" column="send_type"/>
+        <result property="receiver" column="receiver"/>
+        <result property="mailSubject" column="mail_subject"/>
+        <result property="mailCopy" column="mail_copy"/>
+        <result property="securitySend" column="security_send"/>
+        <result property="mailContent" column="mail_content"/>
+        <result property="scheduleTime" column="schedule_time"/>
+        <result property="sender" column="sender"/>
+        <result property="mailType" column="mail_type"/>
+        <result property="moduleId" column="module_id"/>
+        <result property="isMailAttachment" column="is_mail_attachment"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDelete" column="is_delete"/>
+    </resultMap>
+
+
+</mapper>

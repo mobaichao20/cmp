@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.cmp.modules.tel.dao.CrmChannelTelephoneAgentDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.cmp.modules.tel.entity.CrmChannelTelephoneAgentEntity" id="crmChannelTelephoneAgentMap">
+        <result property="id" column="id"/>
+        <result property="channelId" column="channel_id"/>
+        <result property="telephoneAgent" column="telephone_agent"/>
+        <result property="agentPassword" column="agent_password"/>
+        <result property="extension" column="extension"/>
+        <result property="extensionPassword" column="extension_password"/>
+        <result property="skillsGroup" column="skills_group"/>
+        <result property="processingTime" column="processing_time"/>
+        <result property="ringingCount" column="ringing_count"/>
+        <result property="agentNumber" column="agent_number"/>
+        <result property="agentName" column="agent_name"/>
+        <result property="isAnswer" column="is_answer"/>
+        <result property="isHangupSatisfaction" column="is_hangup_satisfaction"/>
+        <result property="isBroadcasterAgent" column="is_broadcaster_agent"/>
+        <result property="createCode" column="create_code"/>
+        <result property="createName" column="create_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateCode" column="update_code"/>
+        <result property="updateName" column="update_name"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="queryTelephoneAgentInfoByExtension" resultType="io.cmp.modules.tel.vo.CrmChannelTelephoneAgentVo">
+        SELECT
+            a.id as id,
+            a.channel_id as channelId,
+            a.telephone_agent as telephoneAgent,
+            a.agent_password as agentPassword,
+            a.extension as extension,
+            a.extension_password as extensionPassword,
+            a.skills_group as skillsGroup,
+            a.processing_time as processingTime,
+            a.ringing_count as ringingCount,
+            a.agent_number as agentNumber,
+            a.agent_name as agentName,
+            a.is_answer as isAnswer,
+            a.is_hangup_satisfaction as isHangupSatisfaction,
+            a.is_broadcaster_agent as isBroadcasterAgent,
+            m.traffic_brand as trafficBrand,
+            m.cti_address_master as ctiAddressMaster,
+            m.cti_address_slave as ctiAddressSlave,
+            m.satisfaction_node_number as satisfactionNodeNumber,
+            m.broadcaster_node as broadcasterNode,
+            m.working_hours_begin as workingHoursBegin,
+            m.working_hours_end as workingHoursEnd,
+            m.is_blacklist as isBlacklist
+        FROM
+            crm_channel_telephone_agent a,crm_channel_management m,sys_user u where a.channel_id=m.id and a.agent_number=u.username and a.extension = #{extension} and a.agent_number = #{agentNumber}
+    </select>
+
+    <select id="queryrRandomTelephoneAgentInfo" resultType="io.cmp.modules.tel.entity.CrmChannelTelephoneAgentEntity">
+        SELECT * FROM crm_channel_telephone_agent WHERE agent_number='' ORDER BY RAND() LIMIT 0,1;
+    </select>
+
+
+</mapper>
